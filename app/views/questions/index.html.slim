@@ -1,1 +1,5 @@
 p= link_to 'Ask question', new_question_path
+b List of available questions:
+ul
+  -@questions.each do |question|
+    li= link_to question.title, question

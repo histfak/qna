@@ -1,9 +1,8 @@
 require 'rails_helper'
 
 feature 'User can create a question' do
-  given(:user) {create(:user)}
-
   describe 'Authenticated user' do
+    given(:user) { create(:user) }
 
     background do
       login(user)
