@@ -81,7 +81,7 @@ RSpec.describe AnswersController, type: :controller do
         expect {delete :destroy, params: {id: answer}}.not_to change(Answer, :count)
       end
 
-      it 'redirects back to question' do
+      it 'redirects to login page' do
         delete :destroy, params: {id: answer}
         expect(response).to redirect_to new_user_session_path
       end
