@@ -17,12 +17,12 @@ feature 'User can delete an answer' do
       login(user)
 
       visit question_path(answer.question)
-      expect(page).not_to have_content 'Delete answer'
+      expect(page).not_to have_link 'Delete answer'
     end
   end
 
   scenario 'Unauthenticated user tries to delete an answer' do
     visit question_path(answer.question)
-    expect(page).not_to have_content 'Delete answer'
+    expect(page).not_to have_link 'Delete answer'
   end
 end

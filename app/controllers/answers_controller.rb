@@ -16,13 +16,17 @@ class AnswersController < ApplicationController
     if @answer.save
       redirect_to @question, notice: 'Your answer has been successfully created.'
     else
-      render :new
+      render 'questions/show'
     end
   end
 
   def destroy
-    @answer.destroy
-    redirect_to question_path(@answer.question)
+    if current_user.author?(@answer)
+      @answer.destroy
+      redirect_to question_path(@answer.question), notice: 'Your answer has been deleted.'
+    else
+      redirect_to question_path(@answer.question), alert: 'You cannot delete a foreign answer.'
+    end
   end
 
   private

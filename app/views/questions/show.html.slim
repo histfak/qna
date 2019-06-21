@@ -4,7 +4,7 @@ p= @question.body
 = link_to 'Delete question', question_path(@question), method: :delete if current_user&.author?(@question)
 
 b Current answers
-- if @answers.any?
+- if @answers&.any?
   table
     - @answers.each do |answer|
       tr

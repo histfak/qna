@@ -17,12 +17,12 @@ feature 'User can delete a question' do
       login(user)
 
       visit question_path(question)
-      expect(page).not_to have_content 'Delete question'
+      expect(page).not_to have_link 'Delete question'
     end
   end
 
   scenario 'Unauthenticated user tries to delete a question' do
     visit question_path(question)
-    expect(page).not_to have_content 'Delete question'
+    expect(page).not_to have_link 'Delete question'
   end
 end
