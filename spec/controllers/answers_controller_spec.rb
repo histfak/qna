@@ -23,11 +23,13 @@ RSpec.describe AnswersController, type: :controller do
     context 'with valid attrs' do
       it 'saves a new answer in the database' do
         expect { post :create, params: { question_id: question, answer: attributes_for(:answer) } }.to change(question.answers, :count).by(1)
+        expect { user.author?(answer) }
       end
 
       it 'redirects to show view' do
         post :create, params: { question_id: question, answer: attributes_for(:answer) }
-        expect(response).to redirect_to assigns(:question)
+        # expect(response).to redirect_to assigns(:question)
+        expect(response).to redirect_to question_path(answer.question)
       end
     end
 
@@ -52,6 +54,7 @@ RSpec.describe AnswersController, type: :controller do
 
         it 'deletes the question' do
           expect {delete :destroy, params: {id: answer}}.to change(user.answers, :count).by(-1)
+          expect { answer.reload }.to raise_error ActiveRecord::RecordNotFound
         end
 
         it 'redirects to index' do
