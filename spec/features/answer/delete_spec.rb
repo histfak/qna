@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 feature 'User can delete an answer' do
-  given(:answer) {create(:answer, body: 'test body')}
+  given(:answer) { create(:answer, body: 'test body') }
 
   describe 'Authenticated user' do
     given(:user) { create(:user) }

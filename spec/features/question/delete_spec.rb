@@ -5,7 +5,6 @@ feature 'User can delete a question' do
   given(:question) { create(:question, title: 'test_title') }
 
   describe 'Authenticated user' do
-
     scenario 'tries to delete his own question' do
       login(question.author)
 

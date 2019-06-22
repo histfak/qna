@@ -47,45 +47,45 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'DELETE #destroy' do
     context 'registered users' do
-      before {login(user)}
+      before { login(user) }
 
       context 'with valid user' do
-        let!(:answer) {create(:answer, author: user)}
+        let!(:answer) { create(:answer, author: user) }
 
         it 'deletes the question' do
-          expect {delete :destroy, params: {id: answer}}.to change(user.answers, :count).by(-1)
+          expect { delete :destroy, params: { id: answer } }.to change(user.answers, :count).by(-1)
           expect { answer.reload }.to raise_error ActiveRecord::RecordNotFound
         end
 
         it 'redirects to index' do
-          delete :destroy, params: {id: answer}
+          delete :destroy, params: { id: answer }
           expect(response).to redirect_to question_path(answer.question)
         end
       end
 
       context 'with invalid user' do
-        let!(:answer) {create(:answer)}
+        let!(:answer) { create(:answer) }
 
         it 'keeps the question' do
-          expect {delete :destroy, params: {id: answer}}.not_to change(Answer, :count)
+          expect { delete :destroy, params: { id: answer } }.not_to change(Answer, :count)
         end
 
         it 'redirects back to question' do
-          delete :destroy, params: {id: answer}
+          delete :destroy, params: { id: answer }
           expect(response).to redirect_to question_path(answer.question)
         end
       end
     end
 
     context 'with unauthenticated user' do
-      let!(:answer) {create(:answer)}
+      let!(:answer) { create(:answer) }
 
       it 'keeps the question' do
-        expect {delete :destroy, params: {id: answer}}.not_to change(Answer, :count)
+        expect { delete :destroy, params: { id: answer } }.not_to change(Answer, :count)
       end
 
       it 'redirects to login page' do
-        delete :destroy, params: {id: answer}
+        delete :destroy, params: { id: answer }
         expect(response).to redirect_to new_user_session_path
       end
     end
