@@ -1,4 +1,5 @@
 class QuestionsController < ApplicationController
+  before_action :authenticate_user!, except: %i[index show]
   before_action :load_question, only: %i[show edit update destroy]
 
   def index
@@ -6,6 +7,8 @@ class QuestionsController < ApplicationController
   end
 
   def show
+    @answer = Answer.new
+    @answers = @question.answers
   end
 
   def new
@@ -13,9 +16,9 @@ class QuestionsController < ApplicationController
   end
 
   def create
-    @question = Question.new(question_params)
+    @question = current_user.questions.new(question_params)
     if @question.save
-      redirect_to @question
+      redirect_to @question, notice: 'Your question has been successfully created.'
     else
       render :new
     end
@@ -33,8 +36,12 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    @question.destroy
-    redirect_to question_path
+    if current_user.author?(@question)
+      @question.destroy
+      redirect_to questions_path, notice: 'Your question has been deleted.'
+    else
+      redirect_to question_path(@question), alert: 'You cannot delete a foreign question.'
+    end
   end
 
   private
