@@ -23,25 +23,25 @@ RSpec.describe AnswersController, type: :controller do
     context 'with valid attrs' do
       it 'saves a new answer in the database' do
         new_answer_attributes = attributes_for(:answer)
-        expect { post :create, params: { question_id: question, answer: attributes_for(:answer) } }.to change(question.answers, :count).by(1)
+        expect { post :create, params: { question_id: question, answer: attributes_for(:answer) }, format: :js }.to change(question.answers, :count).by(1)
         new_answer = question.answers.find_by! new_answer_attributes
         expect(user).to be_author(new_answer)
       end
 
-      it 'redirects to show view' do
-        post :create, params: { question_id: question, answer: attributes_for(:answer) }
-        expect(response).to redirect_to question_path(question)
+      it 'renders create template' do
+        post :create, params: { question_id: question, answer: attributes_for(:answer) }, format: :js
+        expect(response).to render_template :create
       end
     end
 
     context 'with invalid attrs' do
       it 'does not save the answer' do
-        expect { post :create, params: { question_id: question, answer: attributes_for(:answer, :invalid) } }.to_not change(Answer, :count)
+        expect { post :create, params: { question_id: question, answer: attributes_for(:answer, :invalid) }, format: :js }.to_not change(Answer, :count)
       end
 
       it 're-renders new view' do
-        post :create, params: { question_id: question, answer: attributes_for(:answer, :invalid) }
-        expect(response).to render_template 'questions/show'
+        post :create, params: { question_id: question, answer: attributes_for(:answer, :invalid) }, format: :js
+        expect(response).to render_template :create
       end
     end
   end
@@ -88,6 +88,37 @@ RSpec.describe AnswersController, type: :controller do
       it 'redirects to login page' do
         delete :destroy, params: { id: answer }
         expect(response).to redirect_to new_user_session_path
+      end
+    end
+  end
+
+  describe 'PATCH #update' do
+    before { login(user) }
+    let!(:question) { create(:question) }
+    let!(:answer) { create(:answer, question: question, author: user) }
+
+    context 'with valid attrs' do
+      it 'changes answer attrs' do
+        patch :update, params: { id: answer, answer: { body: 'new body' } }, format: :js
+        answer.reload
+        expect(answer.body).to eq 'new body'
+      end
+
+      it 'renders update view' do
+        patch :update, params: { id: answer, answer: { body: 'new body' } }, format: :js
+        expect(response).to render_template :update
+      end
+    end
+    context 'with invalid attrs' do
+      it 'does not change answer attrs' do
+        expect do
+          patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js
+        end.to_not change(answer, :body)
+      end
+
+      it 'renders update view' do
+        patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js
+        expect(response).to render_template :update
       end
     end
   end
