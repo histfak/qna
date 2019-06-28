@@ -6,7 +6,7 @@ $('.flash').html('<p class="alert"><%= alert %></p>');
 $('.flash').html('<p class="notice"><%= notice %></p>');
 <% end %>
 
-$('.answer-errors').html('<%= render 'shared/errors', resource: @answer %>');
-<% unless @answer.errors.present? %>
-  $('.answers').html('<%= j render @question.answers %>');
+$('.question-errors').html('<%= render 'shared/errors', resource: @question %>');
+<% unless @question.errors.present? %>
+  $('.question').html('<%= j render @question %>');
 <% end %>

@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 feature 'User can create an answer' do
-  given(:user) {create(:user)}
-  given(:question) {create(:question)}
-  given!(:answer) {create(:answer, question: question, author: user)}
+  given(:user) { create(:user) }
+  given(:question) { create(:question) }
+  given!(:answer) { create(:answer, question: question, author: user) }
 
   describe 'Authenticated user' do
     background do
@@ -17,7 +17,7 @@ feature 'User can create an answer' do
         click_on 'Post answer'
       end
 
-      # expect(page).to have_content 'Your answer has been successfully created.'
+      expect(page).to have_content 'Your answer has been successfully created.'
       expect(page).to have_content 'new answer body'
     end
 
