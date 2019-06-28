@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 feature 'User can edit his answer' do
-  given(:user) {create(:user)}
-  given(:user2) {create(:user)}
-  given(:question) {create(:question)}
-  given!(:answer) {create(:answer, question: question, author: user)}
+  given(:user) { create(:user) }
+  given(:user2) { create(:user) }
+  given(:question) { create(:question) }
+  given!(:answer) { create(:answer, question: question, author: user) }
 
   scenario 'Unauthenticated user cannot edit answer' do
     visit question_path(question)

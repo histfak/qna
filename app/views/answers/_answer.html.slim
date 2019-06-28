@@ -1,13 +1,16 @@
-p= answer.body
-- if user_signed_in?
-  - if current_user&.author?(answer)
-    p= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
-    p= link_to 'Delete answer', answer_path(answer), method: :delete
+div[class="answer-#{answer.id}"]
+  p= answer.body
+  - if user_signed_in?
+    - if current_user&.author?(answer)
+      p= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+      p= link_to 'Delete answer', answer_path(answer), method: :delete
+    - if current_user&.author?(answer.question)
+      p= link_to 'Mark as the best'
 
-= form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |form|
-  b= form.label :body, "Edit answer:"
-  br
-  = form.text_area :body
-  br
-  br
-  = form.submit 'Update answer'
+  = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |form|
+    b= form.label :body, "Edit answer:"
+    br
+    = form.text_area :body
+    br
+    br
+    = form.submit 'Update answer'
