@@ -13,16 +13,19 @@ feature 'User can set the best answer' do
   end
 
   describe 'Authenticated user' do
-    scenario 'sets the best answer his question', js: true do
+    scenario 'sets the best answer to his question', js: true do
       login(user)
 
       visit question_path(question)
 
-      expect(page).to have_link 'Mark as the best'
-      # expect(page.find???
+      within ".answer-#{best.id}" do
+        click_on 'Mark as the best'
+      end
+
+      expect(page.find(".answers div:first-child").text).to eq 'the best answer body'
     end
 
-    scenario 'tries to set the best answer to the question of other user', js: true do
+    scenario 'tries to set the best answer to the question which belongs to other user', js: true do
       login(user2)
 
       visit question_path(question)
