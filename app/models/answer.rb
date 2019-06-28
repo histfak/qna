@@ -4,7 +4,7 @@ class Answer < ApplicationRecord
 
   validates :body, presence: true
 
-  default_scope { order(best: :desc) }
+  default_scope { order(best: :desc, updated_at: :desc) }
 
   def set_best
     transaction do
