@@ -28,7 +28,7 @@ feature 'User can set the best answer' do
       end
     end
 
-    scenario 'sets the best answer first', js: true do
+    scenario 'sees the best answer first', js: true do
       login(user)
 
       visit question_path(question)
