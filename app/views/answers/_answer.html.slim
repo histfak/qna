@@ -5,7 +5,7 @@ div[class="answer-#{answer.id}"]
     - if current_user&.author?(answer)
       p= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
       p= link_to 'Delete answer', answer_path(answer), method: :delete
-    - if current_user&.author?(answer.question) && !answer.best
+    - if current_user&.author?(answer.question) && !answer.best?
       p= link_to 'Mark as the best', best_answer_path(answer), method: :patch, remote: true
 
   = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |form|

@@ -4,6 +4,8 @@ feature 'User can set the best answer' do
   given(:user) { create(:user) }
   given(:user2) { create(:user) }
   given(:question) { create(:question, author: user) }
+  given!(:any) { create(:answer, body: 'the any answer body', question: question) }
+  given!(:any2) { create(:answer, body: 'the any2 answer body', question: question) }
   given!(:best) { create(:answer, body: 'the best answer body', question: question) }
 
   scenario 'Unauthenticated user tries to set the best answer' do
@@ -14,6 +16,19 @@ feature 'User can set the best answer' do
 
   describe 'Authenticated user' do
     scenario 'sets the best answer to his question', js: true do
+      login(user)
+
+      visit question_path(question)
+
+      within ".answer-#{best.id}" do
+        expect(page).to have_link 'Mark as the best'
+        click_on 'Mark as the best'
+        sleep(1)
+        expect(page).not_to have_link 'Mark as the best'
+      end
+    end
+
+    scenario 'sets the best answer first', js: true do
       login(user)
 
       visit question_path(question)

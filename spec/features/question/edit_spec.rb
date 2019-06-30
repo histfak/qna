@@ -29,6 +29,7 @@ feature 'User can edit his question' do
         expect(page).not_to have_selector 'textarea'
       end
     end
+
     scenario 'edits his question with errors', js: true do
       login(user)
 
@@ -43,8 +44,10 @@ feature 'User can edit his question' do
       expect(page).to have_content question.body
       expect(page).to have_content "Body can't be blank"
     end
+
     scenario 'tries to edit the question which belongs to other user', js: true do
       login(user2)
+
       visit question_path(question)
 
       within '.question' do
