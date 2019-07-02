@@ -1,0 +1,13 @@
+<% if alert %>
+  $('.flash').html('<p class="alert"><%= alert %></p>');
+<% end %>
+
+<% if notice %>
+  $('.flash').html('<p class="notice"><%= notice %></p>');
+<% end %>
+
+$('.answer-errors').html('<%= render 'shared/errors', resource: @answer %>');
+<% if @answer.persisted? %>
+  $('.answers').append('<%= j render @answer %>');
+  $('.new-answer #answer_body').val('');
+<% end %>

@@ -1,0 +1,12 @@
+<% if alert %>
+$('.flash').html('<p class="alert"><%= alert %></p>');
+<% end %>
+
+<% if notice %>
+$('.flash').html('<p class="notice"><%= notice %></p>');
+<% end %>
+
+$('.question-errors').html('<%= render 'shared/errors', resource: @question %>');
+<% unless @question.errors.present? %>
+  $('.question').html('<%= j render @question %>');
+<% end %>

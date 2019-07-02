@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, except: %i[show]
   before_action :load_question, only: %i[new create]
-  before_action :load_answer, only: %i[show destroy]
+  before_action :load_answer, only: %i[show destroy update best]
 
   def show
   end
@@ -14,9 +14,9 @@ class AnswersController < ApplicationController
     @answer = @question.answers.new(answer_params)
     @answer.author = current_user
     if @answer.save
-      redirect_to @question, notice: 'Your answer has been successfully created.'
+      flash.now[:notice] = 'Your answer has been successfully created.'
     else
-      render 'questions/show'
+      flash.now[:notice] = 'Something went wrong.'
     end
   end
 
@@ -27,6 +27,15 @@ class AnswersController < ApplicationController
     else
       redirect_to question_path(@answer.question), alert: 'You cannot delete a foreign answer.'
     end
+  end
+
+  def update
+    @answer.update(answer_params) if current_user.author?(@answer)
+    @question = @answer.question
+  end
+
+  def best
+    @answer.set_best if current_user.author?(@answer.question)
   end
 
   private

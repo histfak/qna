@@ -1,18 +1,22 @@
 doctype html
 html
   head
-    title Qna
+    title QnA
     meta
       = csrf_meta_tags
       = csp_meta_tag
 
-      = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
-      = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
+    = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
 
   body
+    - if user_signed_in?
+      = "Hello, #{current_user.email}"
+      br
     = link_to "Log out", destroy_user_session_path, method: :delete
-    p class="notice"
-      = notice
-    p class="alert"
-      = alert
+    .flash
+      p class="notice"
+        = notice
+      p class="alert"
+        = alert
     = yield

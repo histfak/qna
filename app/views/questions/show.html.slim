@@ -1,19 +1,17 @@
-h1= @question.title
-p= @question.body
+.question
+  = render @question
 
-= link_to 'Delete question', question_path(@question), method: :delete if current_user&.author?(@question)
+.question-errors
 
-b Current answers
-- if @answers&.any?
-  table
-    - @answers.each do |answer|
-      tr
-        td= answer.body
-        td= link_to 'Delete answer', answer_path(answer), method: :delete if current_user&.author?(answer)
+.answers
+  = render @answers
 
-- if user_signed_in?
-  b Write your answer:
-  = form_with model: [@question, @answer], local: true do |form|
-    = form.label :body, "Your answer:"
-    = form.text_area :body
-    = form.submit 'Post answer'
+.answer-errors
+
+= form_with model: [@question, @answer], class: 'new-answer' do |form|
+  b= form.label :body, "Your answer:"
+  br
+  = form.text_area :body
+  br
+  br
+  = form.submit 'Post answer'
