@@ -192,7 +192,6 @@ RSpec.describe AnswersController, type: :controller do
       let!(:answer) { create(:answer) }
 
       it 'sets the best answer to the question' do
-        patch :best, params: { id: answer }, format: :js
         expect do
           patch :best, params: { id: answer }, format: :js
           answer.reload
