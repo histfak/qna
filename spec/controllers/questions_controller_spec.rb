@@ -26,10 +26,6 @@ RSpec.describe QuestionsController, type: :controller do
       expect(assigns(:question)).to eq question
     end
 
-    it 'assigns new answer for question' do
-      expect(assigns(:answer)).to be_a_new(Answer)
-    end
-
     it 'renders show view' do
       expect(response).to render_template :show
     end
@@ -63,6 +59,7 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'POST #create' do
     before { login(user) }
+
     context 'with valid attrs' do
       it 'saves a new question in the database' do
         new_question_attributes = attributes_for(:question)
@@ -91,6 +88,7 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'PATCH #update' do
     before { login(user) }
+
     let!(:question) { create(:question, author: user) }
 
     context 'with valid attrs' do
@@ -106,15 +104,35 @@ RSpec.describe QuestionsController, type: :controller do
         expect(response).to render_template :update
       end
     end
+
     context 'with invalid attrs' do
+      before { login(user) }
+
       it 'does not change question attrs' do
         expect do
           patch :update, params: { id: question, question: attributes_for(:question, :invalid) }, format: :js
+          question.reload
         end.to_not change(question, :body)
       end
 
       it 'renders update view' do
         patch :update, params: { id: question, question: attributes_for(:question, :invalid) }, format: :js
+        expect(response).to render_template :update
+      end
+    end
+
+    context 'with unauthenticated user' do
+      let!(:question) { create(:question) }
+
+      it 'keeps the question' do
+        expect do
+          patch :update, params: { id: question, question: attributes_for(:question) }, format: :js
+          question.reload
+        end.to_not change(question, :body)
+      end
+
+      it 'redirects to login page' do
+        patch :update, params: { id: question, question: attributes_for(:question) }, format: :js
         expect(response).to render_template :update
       end
     end

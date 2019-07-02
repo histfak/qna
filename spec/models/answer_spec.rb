@@ -13,9 +13,19 @@ RSpec.describe Answer, type: :model do
 
   it { should validate_presence_of :body }
 
-  it 'sets the only best answer to the question' do
+  it 'sets the best answer to the question' do
     question.answers.first.set_best
     expect(question.answers.first).to be_best
+  end
+
+  it 'sets the only best answer to the question' do
+    question.answers.first.set_best
+    question.answers.second.set_best
     expect(question.answers.where(best: true).count).to eq 1
+  end
+
+  it 'checks that best answer goes first and the rest goes by updated at' do
+    question.answers.second.set_best
+    expect(question.answers.to_a).to eq([answer2, answer3, answer1])
   end
 end

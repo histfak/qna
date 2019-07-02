@@ -28,6 +28,7 @@ feature 'User can edit his answer' do
         expect(page).not_to have_selector 'textarea'
       end
     end
+
     scenario 'edits his answer with errors', js: true do
       login(user)
 
@@ -42,6 +43,7 @@ feature 'User can edit his answer' do
       expect(page).to have_content answer.body
       expect(page).to have_content "Body can't be blank"
     end
+
     scenario 'tries to edit the answer which belongs to other user', js: true do
       login(user2)
       visit question_path(question)

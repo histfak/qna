@@ -159,18 +159,19 @@ RSpec.describe AnswersController, type: :controller do
   describe 'PATCH #best' do
     context 'registered users' do
       before { login(user) }
-      before { patch :best, params: { id: answer }, format: :js }
 
       context 'with valid user' do
         let!(:question) { create(:question, author: user) }
         let!(:answer) { create(:answer, question: question) }
 
         it 'sets the best answer to the question' do
+          patch :best, params: { id: answer }, format: :js
           answer.reload
           expect(answer).to be_best
         end
 
         it 'redirects to best view' do
+          patch :best, params: { id: answer }, format: :js
           expect(response).to render_template :best
         end
       end
@@ -180,6 +181,7 @@ RSpec.describe AnswersController, type: :controller do
         let!(:answer) { create(:answer, question: question) }
 
         it 'sets the best answer to the question' do
+          patch :best, params: { id: answer }, format: :js
           answer.reload
           expect(answer).not_to be_best
         end
@@ -190,6 +192,7 @@ RSpec.describe AnswersController, type: :controller do
       let!(:answer) { create(:answer) }
 
       it 'sets the best answer to the question' do
+        patch :best, params: { id: answer }, format: :js
         expect do
           patch :best, params: { id: answer }, format: :js
           answer.reload
