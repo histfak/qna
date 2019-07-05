@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, except: %i[show]
   before_action :load_question, only: %i[new create]
-  before_action :load_answer, only: %i[show destroy update best delete_attachment]
+  before_action :load_answer, only: %i[show destroy update best]
 
   def show
   end

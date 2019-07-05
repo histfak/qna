@@ -5,10 +5,7 @@ class AttachmentsController < ApplicationController
     file = ActiveStorage::Attachment.find(params[:id])
     if current_user.author?(file.record)
       file.purge
-      case file.record_type
-      when 'Question' then @question = file.record
-      when 'Answer' then @answer = file.record
-      end
+      @resource = file.record
     end
   end
 end

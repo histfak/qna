@@ -21,7 +21,7 @@ RSpec.describe AttachmentsController, type: :controller do
       end
     end
 
-    context 'User tries to delete to delete the file which belongs to other user' do
+    context 'User tries to delete the file which belongs to other user' do
       before do
         login(user)
         delete :destroy, params: { id: question.files.first }, format: :js

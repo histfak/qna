@@ -1,6 +1,5 @@
-<% if @question %>
-  $('.question').html('<%= j render @question %>');
-<% end %>
-<% if @answer %>
-  $('.answer-<%= @answer.id %>').html('<%= j render @answer %>');
+<% if @resource.is_a?(Question) %>
+  $('.question').html('<%= j render @resource %>');
+<% else %>
+  $('.answer-<%= @resource.id %>').html('<%= j render @resource %>');
 <% end %>
