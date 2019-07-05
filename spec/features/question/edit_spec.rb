@@ -4,6 +4,7 @@ feature 'User can edit his question' do
   given(:user) { create(:user) }
   given(:user2) { create(:user) }
   given(:question) { create(:question, author: user) }
+  given(:question_with_files) { create(:question, :with_files, author: user) }
 
   scenario 'Unauthenticated user cannot edit question' do
     visit question_path(question)
@@ -27,6 +28,21 @@ feature 'User can edit his question' do
         expect(page).not_to have_content question.body
         expect(page).to have_content 'edited question'
         expect(page).not_to have_selector 'textarea'
+      end
+    end
+
+    scenario 'edits his attachment', js: true do
+      login(user)
+
+      visit question_path(question)
+
+      within '.question' do
+        click_on 'Edit'
+        attach_file 'Files', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+        click_on 'Update question'
+
+        expect(page).to have_link 'rails_helper.rb'
+        expect(page).to have_link 'spec_helper.rb'
       end
     end
 

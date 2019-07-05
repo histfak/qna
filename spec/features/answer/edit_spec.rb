@@ -29,6 +29,21 @@ feature 'User can edit his answer' do
       end
     end
 
+    scenario 'edits his attachment', js: true do
+      login(user)
+
+      visit question_path(question)
+
+      within '.answers div:first-child' do
+        click_on 'Edit'
+        attach_file 'Files', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+        click_on 'Update answer'
+
+        expect(page).to have_link 'rails_helper.rb'
+        expect(page).to have_link 'spec_helper.rb'
+      end
+    end
+
     scenario 'edits his answer with errors', js: true do
       login(user)
 
