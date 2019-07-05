@@ -1,6 +1,12 @@
 .question
   = render @question
 
+.links
+  p Links:
+  ul
+    - @question.links.each do |link|
+      li= link_to link.name, link.url
+
 .question-errors
 
 .answers
@@ -8,13 +14,23 @@
 
 .answer-errors
 
-= form_with model: [@question, @answer], class: 'new-answer' do |form|
-  b= form.label :body, "Your answer:"
+= form_with model: [@question, @answer], class: 'new-answer' do |f|
+  b= f.label :body, "Your answer:"
   br
-  = form.text_area :body
+  = f.text_area :body
   br
   br
-  = form.label :files
-  = form.file_field :files, multiple: true
+  = f.label :files
+  = f.file_field :files, multiple: true
   br
-  = form.submit 'Post answer'
+  p Links:
+  p
+    = f.fields_for :links do |l|
+      p
+        = l.label :name, 'Link name'
+        = l.text_field :name
+      p
+        = l.label :url, 'URL'
+        = l.text_field :url
+  br
+  = f.submit 'Post answer'
