@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, except: %i[show]
   before_action :load_question, only: %i[new create]
-  before_action :load_answer, only: %i[show destroy update best]
+  before_action :load_answer, only: %i[show destroy update best delete_attachment]
 
   def show
   end
@@ -45,10 +45,10 @@ class AnswersController < ApplicationController
   end
 
   def load_answer
-    @answer = Answer.find(params[:id])
+    @answer = Answer.with_attached_files.find(params[:id])
   end
 
   def answer_params
-    params.require(:answer).permit(:body)
+    params.require(:answer).permit(:body, files: [])
   end
 end

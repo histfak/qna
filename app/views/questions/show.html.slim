@@ -14,4 +14,7 @@
   = form.text_area :body
   br
   br
+  = form.label :files
+  = form.file_field :files, multiple: true
+  br
   = form.submit 'Post answer'
