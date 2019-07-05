@@ -18,6 +18,6 @@ p= question.body
     br
     br
     = form.label :files
-    = form.file_field :files, multiple: true
+    = form.file_field :files, multiple: true, direct_upload: true
     br
     = form.submit 'Update question'
