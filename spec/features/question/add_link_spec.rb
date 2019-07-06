@@ -21,7 +21,6 @@ feature 'User can add links to question' do
     expect(page).to have_link 'My link', href: regular_url
   end
 
-
   scenario 'User adds invalid link when asks question' do
     login(user)
     visit new_question_path

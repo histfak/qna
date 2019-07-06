@@ -5,9 +5,16 @@ p= question.body
   p Links:
   ul
     - question.links.each do |link|
-      -if link.gist?
-        li= link.gist_fetch_content
-      li= link_to link.name, link.url
+      - if link.gist?
+        li
+          p= link_to link.gist_fetch_content, link.url
+          - if current_user&.author?(question)
+            p= link_to 'Delete link', link_path(link), method: :delete, remote: true
+      - else
+        li
+          p= link_to link.name, link.url
+          - if current_user&.author?(question)
+            p= link_to 'Delete link', link_path(link), method: :delete, remote: true
 
 - if question.files.attached?
   - question.files.each do |file|
@@ -19,13 +26,21 @@ p= question.body
   p= link_to 'Edit', '#', class: 'edit-question-link', data: { question_id: question.id }
   p= link_to 'Delete question', question_path(question), method: :delete, remote: true
 
-  = form_with model: question, class: 'hidden', html: {id: "edit-question-#{question.id}"} do |form|
-    b= form.label :body, "Edit question:"
+  = form_with model: question, class: 'hidden', html: {id: "edit-question-#{question.id}"} do |f|
+    b= f.label :body, "Edit question:"
     br
-    = form.text_area :body
+    = f.text_area :body
     br
     br
-    = form.label :files
-    = form.file_field :files, multiple: true, direct_upload: true
+    = f.label :files
+    = f.file_field :files, multiple: true, direct_upload: true
     br
-    = form.submit 'Update question'
+    p Links:
+    p
+      = f.fields_for :links do |l|
+        = render 'shared/link_fields', f: l
+      br
+      .links
+        = link_to_add_association 'Add link', f, :links, partial: 'shared/link_fields'
+    br
+    = f.submit 'Update question'

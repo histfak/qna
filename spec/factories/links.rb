@@ -3,6 +3,6 @@ FactoryBot.define do
     sequence :name do |n|
       "Link #{n}"
     end
-    url { "MyString" }
+    url { "http://bing.com" }
   end
 end

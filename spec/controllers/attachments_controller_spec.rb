@@ -85,7 +85,7 @@ RSpec.describe AttachmentsController, type: :controller do
         expect do
           delete :destroy, params: { id: answer.files.first }, format: :js
           answer.reload
-        end.to_not change(question, :files)
+        end.to_not change(answer, :files)
       end
 
       it 'redirects to 401 page' do

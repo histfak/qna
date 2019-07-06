@@ -8,8 +8,14 @@ FactoryBot.define do
       title { nil }
     end
 
+    trait :with_links do
+      after :create do |question|
+        create :link, linkable: question
+      end
+    end
+
     trait :with_files do
-      files { fixture_file_upload("#{Rails.root}/spec/rails_helper.rb", 'text/plain') }
+      files { fixture_file_upload("#{Rails.root}/spec/spec_helper.rb", 'text/plain') }
     end
   end
 end

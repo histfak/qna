@@ -6,6 +6,7 @@ class Link < ApplicationRecord
 
   def gist?
     return true if (url =~ /^https:\/\/gist.github.com\/\w\/*/) == 0
+
     false
   end
 
