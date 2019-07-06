@@ -1,6 +1,12 @@
 h1= question.title
 p= question.body
 
+- if current_user&.author?(question) && question.reward.present?
+  p Reward
+  ul
+    li= question.reward.title
+    li= image_tag question.reward.badge
+
 .links
   p Links:
   ul

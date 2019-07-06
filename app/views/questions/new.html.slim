@@ -11,6 +11,16 @@
     = f.label :files
     = f.file_field :files, multiple: true, direct_upload: true
 
+  p Reward:
+  p
+    = f.fields_for :reward do |r|
+      = r.label :title, 'Reward'
+      = r.text_field :title
+      br
+      br
+      = r.label :badge, 'Badge'
+      = r.file_field :badge, direct_upload: true
+
   p Links:
   p
     = f.fields_for :links do |l|
