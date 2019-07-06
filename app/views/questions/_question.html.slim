@@ -1,6 +1,14 @@
 h1= question.title
 p= question.body
 
+.links
+  p Links:
+  ul
+    - question.links.each do |link|
+      -if link.gist?
+        li= link.gist_fetch_content
+      li= link_to link.name, link.url
+
 - if question.files.attached?
   - question.files.each do |file|
     p= link_to file.filename.to_s, url_for(file)

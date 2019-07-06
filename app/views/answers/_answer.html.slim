@@ -6,6 +6,8 @@ div[class="answer-#{answer.id}"]
     p Links:
     ul
       - answer.links.each do |link|
+        - if link.gist?
+          li= link.gist_fetch_content
         li= link_to link.name, link.url
 
   - if answer.files.attached?
