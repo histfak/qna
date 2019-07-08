@@ -26,7 +26,7 @@ RSpec.describe AnswersController, type: :controller do
         new_answer_attributes = attributes_for(:answer)
         expect { post :create, params: { question_id: question, answer: attributes_for(:answer) }, format: :js }.to change(question.answers, :count).by(1)
         new_answer = question.answers.find_by! new_answer_attributes
-        expect(user).to be_author(new_answer)
+        expect(user).to be_author_of(new_answer)
       end
 
       it 'renders create template' do

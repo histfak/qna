@@ -16,7 +16,7 @@ class Answer < ApplicationRecord
     transaction do
       question.answers.where(best: true).update_all(best: false)
       update!(best: true)
-      question.reward.update!(user: author) if question.reward.present? && !question.author.author?(self)
+      question.reward.update!(user: author) if question.reward.present? && !question.author.author_of?(self)
     end
   end
 end

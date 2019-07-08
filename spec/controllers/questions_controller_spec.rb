@@ -77,7 +77,7 @@ RSpec.describe QuestionsController, type: :controller do
         new_question_attributes = attributes_for(:question)
         expect { post :create, params: { question: attributes_for(:question) } }.to change(Question, :count).by(1)
         new_question = user.questions.find_by! new_question_attributes
-        expect(user).to be_author(new_question)
+        expect(user).to be_author_of(new_question)
       end
 
       it 'redirects to show view' do

@@ -1,7 +1,7 @@
 h1= question.title
 p= question.body
 
-- if current_user&.author?(question) && question.reward.present?
+- if current_user&.author_of?(question) && question.reward.present?
   p Reward
   ul
     li= question.reward.title
@@ -14,21 +14,21 @@ p= question.body
       - if link.gist?
         li
           p= link_to link.gist_fetch_content, link.url
-          - if current_user&.author?(question)
+          - if current_user&.author_of?(question)
             p= link_to 'Delete link', link_path(link), method: :delete, remote: true
       - else
         li
           p= link_to link.name, link.url
-          - if current_user&.author?(question)
+          - if current_user&.author_of?(question)
             p= link_to 'Delete link', link_path(link), method: :delete, remote: true
 
 - if question.files.attached?
   - question.files.each do |file|
     p= link_to file.filename.to_s, url_for(file)
-    - if current_user&.author?(question)
+    - if current_user&.author_of?(question)
       p= link_to 'Delete file', attachment_path(file), method: :delete, remote: true
 
-- if current_user&.author?(question) && user_signed_in?
+- if current_user&.author_of?(question) && user_signed_in?
   p= link_to 'Edit', '#', class: 'edit-question-link', data: { question_id: question.id }
   p= link_to 'Delete question', question_path(question), method: :delete, remote: true
 

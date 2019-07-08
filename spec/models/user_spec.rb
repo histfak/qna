@@ -12,7 +12,7 @@ RSpec.describe User, type: :model do
   let(:question) { user.questions.create }
 
   it 'has the correct author check method' do
-    expect(user).to be_author(question)
-    expect(user).not_to be_author(Question.new)
+    expect(user).to be_author_of(question)
+    expect(user).not_to be_author_of(Question.new)
   end
 end
