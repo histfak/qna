@@ -9,10 +9,13 @@ class QuestionsController < ApplicationController
   def show
     @answer = Answer.new
     @answers = @question.answers
+    @answer.links.new
   end
 
   def new
     @question = Question.new
+    @question.links.new
+    @question.reward = Reward.new
   end
 
   def create
@@ -28,11 +31,11 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    @question.update(question_params) if current_user.author?(@question)
+    @question.update(question_params) if current_user.author_of?(@question)
   end
 
   def destroy
-    if current_user.author?(@question)
+    if current_user.author_of?(@question)
       @question.destroy
       redirect_to questions_path, notice: 'Your question has been deleted.'
     else
@@ -47,6 +50,8 @@ class QuestionsController < ApplicationController
   end
 
   def question_params
-    params.require(:question).permit(:title, :body, files: [])
+    params.require(:question).permit(:title, :body, files: [],
+                                                    links_attributes: [:name, :url],
+                                                    reward_attributes: [:title, :badge])
   end
 end

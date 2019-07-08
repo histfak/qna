@@ -5,6 +5,8 @@ feature 'User can edit his question' do
   given(:user2) { create(:user) }
   given(:question) { create(:question, author: user) }
   given(:question_with_files) { create(:question, :with_files, author: user) }
+  given(:question_with_links) { create(:question, :with_links, author: user) }
+  given(:regular_url) { 'http:/google.com' }
 
   scenario 'Unauthenticated user cannot edit question' do
     visit question_path(question)
@@ -34,7 +36,7 @@ feature 'User can edit his question' do
     scenario 'edits his attachment', js: true do
       login(user)
 
-      visit question_path(question)
+      visit question_path(question_with_files)
 
       within '.question' do
         click_on 'Edit'
@@ -43,6 +45,21 @@ feature 'User can edit his question' do
 
         expect(page).to have_link 'rails_helper.rb'
         expect(page).to have_link 'spec_helper.rb'
+      end
+    end
+
+    scenario 'edits his links', js: true do
+      login(user)
+
+      visit question_path(question_with_links)
+
+      within '.question' do
+        click_on 'Edit'
+        fill_in 'Link name', with: 'My link'
+        fill_in 'URL', with: regular_url
+        click_on 'Update question'
+
+        expect(page).to have_link 'My link', href: regular_url
       end
     end
 

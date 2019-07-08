@@ -21,7 +21,7 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    if current_user.author?(@answer)
+    if current_user.author_of?(@answer)
       @answer.destroy
       redirect_to question_path(@answer.question), notice: 'Your answer has been deleted.'
     else
@@ -30,12 +30,12 @@ class AnswersController < ApplicationController
   end
 
   def update
-    @answer.update(answer_params) if current_user.author?(@answer)
+    @answer.update(answer_params) if current_user.author_of?(@answer)
     @question = @answer.question
   end
 
   def best
-    @answer.set_best if current_user.author?(@answer.question)
+    @answer.set_best if current_user.author_of?(@answer.question)
   end
 
   private
@@ -49,6 +49,7 @@ class AnswersController < ApplicationController
   end
 
   def answer_params
-    params.require(:answer).permit(:body, files: [])
+    params.require(:answer).permit(:body, files: [],
+                                          links_attributes: [:name, :url])
   end
 end

@@ -4,7 +4,10 @@ feature 'User can edit his answer' do
   given(:user) { create(:user) }
   given(:user2) { create(:user) }
   given(:question) { create(:question) }
+  given(:question2) { create(:question) }
   given!(:answer) { create(:answer, question: question, author: user) }
+  given!(:answer_with_links) { create(:answer, :with_links, question: question2, author: user) }
+  given(:regular_url) { 'http:/yandex.ru.com' }
 
   scenario 'Unauthenticated user cannot edit answer' do
     visit question_path(question)
@@ -41,6 +44,21 @@ feature 'User can edit his answer' do
 
         expect(page).to have_link 'rails_helper.rb'
         expect(page).to have_link 'spec_helper.rb'
+      end
+    end
+
+    scenario 'edits his links', js: true do
+      login(user)
+
+      visit question_path(question2)
+
+      within '.answers div:first-child' do
+        click_on 'Edit'
+        fill_in 'Link name', with: 'My link'
+        fill_in 'URL', with: regular_url
+        click_on 'Update answer'
+
+        expect(page).to have_link 'My link', href: regular_url
       end
     end
 

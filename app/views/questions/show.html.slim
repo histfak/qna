@@ -8,13 +8,21 @@
 
 .answer-errors
 
-= form_with model: [@question, @answer], class: 'new-answer' do |form|
-  b= form.label :body, "Your answer:"
+= form_with model: [@question, @answer], class: 'new-answer' do |f|
+  b= f.label :body, "Your answer:"
   br
-  = form.text_area :body
+  = f.text_area :body
   br
   br
-  = form.label :files
-  = form.file_field :files, multiple: true
+  = f.label :files
+  = f.file_field :files, multiple: true
   br
-  = form.submit 'Post answer'
+  p Links:
+  p
+    = f.fields_for :links do |l|
+      = render 'shared/link_fields', f: l
+    br
+    .links
+      = link_to_add_association 'Add link', f, :links, partial: 'shared/link_fields'
+  br
+  = f.submit 'Post answer'
