@@ -2,6 +2,16 @@ div[class="answer-#{answer.id}"]
   br
   p= answer.body
 
+  .answer-voting
+    p.answer-scores
+      | Scores: #{answer.scores}
+
+    p.answer-voting-buttons
+      - if user_signed_in? && !current_user.author_of?(answer)
+        = button_to "Like", like_answer_path(answer), method: :patch, data: { type: :json }, remote: true
+        = button_to "Dislike", dislike_answer_path(answer), method: :patch, data: { type: :json }, remote: true
+        = button_to 'Reset', reset_answer_path(answer), method: :patch, data: { type: :json }, remote: true
+
   .links
     p Links:
     ul

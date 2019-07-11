@@ -1,6 +1,16 @@
 .question
   = render @question
 
+.question-voting
+  .question-scores
+    | Scores: #{@question.scores}
+
+  .question-voting-buttons
+    - if user_signed_in? && !current_user.author_of?(@question)
+      = button_to "Like", like_question_path(@question), method: :patch, data: { type: :json }, remote: true
+      = button_to "Dislike", dislike_question_path(@question), method: :patch, data: { type: :json }, remote: true
+      = button_to 'Reset', reset_question_path(@question), method: :patch, data: { type: :json }, remote: true
+
 .question-errors
 
 .answers
