@@ -13,11 +13,13 @@ feature 'User can vote for the answer' do
 
       visit question_path(question)
 
-      within '.answers div:first-child' do
+      within '.answer-voting-links' do
         click_on 'Like'
       end
 
-      expect(page).to have_content 'Scores: 1'
+      within '.answer-scores' do
+        expect(page).to have_content 'Scores: 1'
+      end
     end
 
     scenario 'dislikes an answer' do
@@ -25,11 +27,13 @@ feature 'User can vote for the answer' do
 
       visit question_path(question)
 
-      within '.answers div:first-child' do
+      within '.answer-voting-links' do
         click_on 'Dislike'
       end
 
-      expect(page).to have_content 'Scores: -1'
+      within '.answer-scores' do
+        expect(page).to have_content 'Scores: -1'
+      end
     end
 
     scenario 'resets an answer vote' do
@@ -37,11 +41,14 @@ feature 'User can vote for the answer' do
 
       visit question_path(question)
 
-      within '.answers div:first-child' do
+      within '.answer-voting-links' do
+        click_on 'Like'
         click_on 'Reset'
       end
 
-      expect(page).to have_content 'Scores: 0'
+      within '.answer-scores' do
+        expect(page).to have_content 'Scores: 0'
+      end
     end
 
     scenario 'cannot vote for his own answer' do

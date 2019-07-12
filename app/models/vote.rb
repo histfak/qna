@@ -6,7 +6,11 @@ class Vote < ApplicationRecord
   validates :score, presence: true
 
   def like
-    update!(score: 1)
+    if score
+      update!(score: 1)
+    else
+
+    end
   end
 
   def dislike
@@ -14,6 +18,6 @@ class Vote < ApplicationRecord
   end
 
   def reset
-    update!(score: 0)
+    delete
   end
 end

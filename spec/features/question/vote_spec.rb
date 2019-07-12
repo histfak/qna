@@ -11,7 +11,7 @@ feature 'User can vote for the question' do
 
       visit question_path(question)
 
-      within '.question-voting-buttons' do
+      within '.question-voting-links' do
         click_on 'Like'
       end
 
@@ -23,7 +23,7 @@ feature 'User can vote for the question' do
 
       visit question_path(question)
 
-      within '.question-voting-buttons' do
+      within '.question-voting-links' do
         click_on 'Dislike'
       end
 
@@ -35,7 +35,8 @@ feature 'User can vote for the question' do
 
       visit question_path(question)
 
-      within '.question-voting-buttons' do
+      within '.question-voting-links' do
+        click_on 'Like'
         click_on 'Reset'
       end
 

@@ -6,11 +6,8 @@ div[class="answer-#{answer.id}"]
     p.answer-scores
       | Scores: #{answer.scores}
 
-    p.answer-voting-buttons
-      - if user_signed_in? && !current_user.author_of?(answer)
-        = button_to "Like", like_answer_path(answer), method: :patch, data: { type: :json }, remote: true
-        = button_to "Dislike", dislike_answer_path(answer), method: :patch, data: { type: :json }, remote: true
-        = button_to 'Reset', reset_answer_path(answer), method: :patch, data: { type: :json }, remote: true
+    .answer-voting-links
+      = render 'shared/voting_links', resource: answer
 
   .links
     p Links:

@@ -9,5 +9,12 @@ $(document).on('turbolinks:load', function () {
     $('.question-voting').on('ajax:success', function(e) {
         var voting = e.detail[0];
         $('.question-scores').html('Scores: ' + voting.scores);
+        if (voting.type !== 'reset')
+            $(".question-voting-links").html('<p><a data-type="json" data-remote="true" rel="nofollow" data-method="patch" href="/questions/' + voting.id + '/reset">Reset</a></p>')
+        else
+            $(".question-voting-links").html(
+                '<p><a data-type="json" data-remote="true" rel="nofollow" data-method="patch" href="/questions/' + voting.id + '/like">Like</a></p>\
+                <p><a data-type="json" data-remote="true" rel="nofollow" data-method="patch" href="/questions/' + voting.id + '/dislike">Dislike</a></p>'
+        );
     });
 });

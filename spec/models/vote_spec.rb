@@ -25,6 +25,6 @@ RSpec.describe Vote, type: :model do
 
   it 'has the correct reset method' do
     vote.reset
-    expect(vote.score).to be_equal(0)
+    expect { vote.reload }.to raise_error ActiveRecord::RecordNotFound
   end
 end

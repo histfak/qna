@@ -10,7 +10,7 @@ module Voted
     if @vote
       @vote.like
     else
-      @votable.votes.create(user: current_user, score: 1)
+      @votable.new_like(current_user)
     end
 
     scores
@@ -20,7 +20,7 @@ module Voted
     if @vote
       @vote.dislike
     else
-      @votable.votes.create(user: current_user, score: -1)
+      @votable.new_dislike(current_user)
     end
 
     scores
@@ -35,7 +35,7 @@ module Voted
   private
 
   def scores
-    render json: { scores: @votable.scores }
+    render json: { scores: @votable.scores, id: @votable.id, type: action_name }
   end
 
   def model_klass

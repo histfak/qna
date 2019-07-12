@@ -1,0 +1,4 @@
+- if user_signed_in? && !current_user.author_of?(resource)
+  p = link_to "Like", polymorphic_path(resource, action: :like), method: :patch, data: { type: :json }, remote: true unless resource.voted?(current_user)
+  p = link_to "Dislike", polymorphic_path(resource, action: :dislike), method: :patch, data: { type: :json }, remote: true unless resource.voted?(current_user)
+  p = link_to 'Reset', polymorphic_path(resource, action: :reset), method: :patch, data: { type: :json }, remote: true if resource.voted?(current_user)
