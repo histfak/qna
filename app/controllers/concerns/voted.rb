@@ -7,35 +7,11 @@ module Voted
   end
 
   def like
-    if @votable.voted?(current_user)
-      error
-    elsif @votable.author != current_user
-      if @vote
-        @vote.like
-      else
-        @votable.new_like(current_user)
-      end
-
-      scores
-    else
-      error
-    end
+    vote(__method__)
   end
 
   def dislike
-    if @votable.voted?(current_user)
-      error
-    elsif @votable.author != current_user
-      if @vote
-        @vote.dislike
-      else
-        @votable.new_dislike(current_user)
-      end
-
-      scores
-    else
-      error
-    end
+    vote(__method__)
   end
 
   def reset
@@ -53,6 +29,22 @@ module Voted
   end
 
   private
+
+  def vote(method)
+    if @votable.voted?(current_user)
+      error
+    elsif @votable.author != current_user
+      if @vote
+        eval "@vote.#{method}"
+      else
+        eval "@votable.new_#{method}(current_user)"
+      end
+
+      scores
+    else
+      error
+    end
+  end
 
   def scores
     render json: { scores: @votable.scores, id: @votable.id, type: action_name }
