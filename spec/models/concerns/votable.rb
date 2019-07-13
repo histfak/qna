@@ -16,12 +16,6 @@ RSpec.shared_examples_for 'votable' do
     expect(@resource.scores).to be_equal 3
   end
 
-  it 'have the correct scores method' do
-    expect(@resource.scores).to be_equal 0
-    create_list(:vote, 3, votable: @resource)
-    expect(@resource.scores).to be_equal 3
-  end
-
   it 'have the correct voted? method' do
     expect(@resource).not_to be_voted(user)
     expect(@resource).to be_voted(user2)
