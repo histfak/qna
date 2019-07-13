@@ -18,7 +18,7 @@ module Voted
     if !@votable.voted?(current_user)
       error
     else
-      if @vote && @vote.author == current_user
+      if @vote && current_user.author_of?(@vote)
         @vote.reset
 
         scores
@@ -33,7 +33,7 @@ module Voted
   def vote(method)
     if @votable.voted?(current_user)
       error
-    elsif @votable.author != current_user
+    elsif !current_user.author_of?(@votable)
       if @vote
         eval "@vote.#{method}"
       else
