@@ -10,7 +10,7 @@ module Votable
   end
 
   def voted?(user)
-    return true if votes.find_by(user_id: user.id)
+    return true if votes.exists?(user_id: user.id)
 
     false
   end

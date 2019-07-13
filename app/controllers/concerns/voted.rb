@@ -7,35 +7,59 @@ module Voted
   end
 
   def like
-    if @vote
-      @vote.like
-    else
-      @votable.new_like(current_user)
-    end
+    if @votable.voted?(current_user)
+      error
+    elsif @votable.author != current_user
+      if @vote
+        @vote.like
+      else
+        @votable.new_like(current_user)
+      end
 
-    scores
+      scores
+    else
+      error
+    end
   end
 
   def dislike
-    if @vote
-      @vote.dislike
-    else
-      @votable.new_dislike(current_user)
-    end
+    if @votable.voted?(current_user)
+      error
+    elsif @votable.author != current_user
+      if @vote
+        @vote.dislike
+      else
+        @votable.new_dislike(current_user)
+      end
 
-    scores
+      scores
+    else
+      error
+    end
   end
 
   def reset
-    @vote.reset if @vote
+    if !@votable.voted?(current_user)
+      error
+    else
+      if @vote && @vote.author == current_user
+        @vote.reset
 
-    scores
+        scores
+      else
+        error
+      end
+    end
   end
 
   private
 
   def scores
     render json: { scores: @votable.scores, id: @votable.id, type: action_name }
+  end
+
+  def error
+    render json: { status: :unprocessable_entity }
   end
 
   def model_klass

@@ -1,4 +1,6 @@
 class Vote < ApplicationRecord
+  include Authorable
+
   belongs_to :user
   belongs_to :votable, polymorphic: true
 
@@ -6,11 +8,7 @@ class Vote < ApplicationRecord
   validates :score, presence: true
 
   def like
-    if score
-      update!(score: 1)
-    else
-
-    end
+    update!(score: 1)
   end
 
   def dislike

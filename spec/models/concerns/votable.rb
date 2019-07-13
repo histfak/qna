@@ -23,8 +23,8 @@ RSpec.shared_examples_for 'votable' do
   end
 
   it 'have the correct voted? method' do
-    expect(@resource.voted?(user)).to be_falsey
-    expect(@resource.voted?(user2)).to be_truthy
+    expect(@resource).not_to be_voted(user)
+    expect(@resource).to be_voted(user2)
   end
 
   it 'have the correct new_like method' do

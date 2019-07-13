@@ -51,6 +51,33 @@ feature 'User can vote for the answer' do
       end
     end
 
+    scenario 'votes twice' do
+      login(user)
+
+      visit question_path(question)
+
+      within '.answer-voting-links' do
+        click_on 'Like'
+        expect(page).not_to have_content 'Like'
+      end
+    end
+
+    scenario 're-votes' do
+      login(user)
+
+      visit question_path(question)
+
+      within '.answer-voting-links' do
+        click_on 'Like'
+        click_on 'Reset'
+        click_on 'Dislike'
+      end
+
+      within '.answer-scores' do
+        expect(page).to have_content 'Scores: -1'
+      end
+    end
+
     scenario 'cannot vote for his own answer' do
       login(user)
 
