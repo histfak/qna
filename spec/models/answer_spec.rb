@@ -1,6 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe Answer, type: :model do
+  it_behaves_like 'linkable'
+  it_behaves_like 'fileable'
+  it_behaves_like 'authorable'
+  it_behaves_like 'votable'
+
   let!(:user) { create(:user) }
   let!(:user2) { create(:user) }
   let!(:question) { create(:question, author: user) }
@@ -10,13 +15,9 @@ RSpec.describe Answer, type: :model do
   let!(:reward) { create(:reward, question: question, user: user2) }
 
   it { should belong_to :question }
-  it { should belong_to(:author).class_name('User') }
   it { should have_db_index :question_id }
-  it { should have_many(:links).dependent(:destroy) }
 
   it { should validate_presence_of :body }
-
-  it { should accept_nested_attributes_for :links }
 
   it 'sets the best answer to the question' do
     question.answers.first.set_best
@@ -32,10 +33,6 @@ RSpec.describe Answer, type: :model do
   it 'checks that best answer goes first and the rest goes by updated at' do
     question.answers.second.set_best
     expect(question.answers.to_a).to eq([answer2, answer3, answer1])
-  end
-
-  it 'have many attached files' do
-    expect(Answer.new.files).to be_an_instance_of(ActiveStorage::Attached::Many)
   end
 
   it 'sets a reward for best answer' do

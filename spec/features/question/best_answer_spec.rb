@@ -28,7 +28,7 @@ feature 'User can set the best answer' do
 
       visit question_path(question)
 
-      within '.answers div:last-child' do
+      within ".answer-#{any.id}" do
         click_on 'Mark as the best'
       end
 

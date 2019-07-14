@@ -1,6 +1,13 @@
 .question
   = render @question
 
+.question-voting
+  .question-scores
+    | Scores: #{@question.scores}
+
+  .question-voting-links
+    = render 'shared/voting_links', resource: @question
+
 .question-errors
 
 .answers

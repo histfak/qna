@@ -2,6 +2,13 @@ div[class="answer-#{answer.id}"]
   br
   p= answer.body
 
+  .answer-voting
+    p.answer-scores
+      | Scores: #{answer.scores}
+
+    .answer-voting-links
+      = render 'shared/voting_links', resource: answer
+
   .links
     p Links:
     ul
