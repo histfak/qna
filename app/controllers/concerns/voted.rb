@@ -7,52 +7,48 @@ module Voted
   end
 
   def like
-    vote(__method__)
+    if @votable.voted?(current_user)
+      render json: { status: :unprocessable_entity }
+    elsif !current_user.author_of?(@votable)
+      if @vote
+        @vote.like
+      else
+        @votable.new_like(current_user)
+      end
+
+      render json: { scores: @votable.scores, id: @votable.id, type: action_name }
+    else
+      render json: { status: :unprocessable_entity }
+    end
   end
 
   def dislike
-    vote(__method__)
+    if @votable.voted?(current_user)
+      render json: { status: :unprocessable_entity }
+    elsif !current_user.author_of?(@votable)
+      if @vote
+        @vote.dislike
+      else
+        @votable.new_dislike(current_user)
+      end
+
+      render json: { scores: @votable.scores, id: @votable.id, type: action_name }
+    else
+      render json: { status: :unprocessable_entity }
+    end
   end
 
   def reset
-    if !@votable.voted?(current_user)
-      error
-    else
-      if @vote && current_user.author_of?(@vote)
-        @vote.reset
+    if @vote && current_user.author_of?(@vote)
+      @vote.reset
 
-        scores
-      else
-        error
-      end
+      render json: { scores: @votable.scores, id: @votable.id, type: action_name }
+    else
+      render json: { status: :unprocessable_entity }
     end
   end
 
   private
-
-  def vote(method)
-    if @votable.voted?(current_user)
-      error
-    elsif !current_user.author_of?(@votable)
-      if @vote
-        eval "@vote.#{method}"
-      else
-        eval "@votable.new_#{method}(current_user)"
-      end
-
-      scores
-    else
-      error
-    end
-  end
-
-  def scores
-    render json: { scores: @votable.scores, id: @votable.id, type: action_name }
-  end
-
-  def error
-    render json: { status: :unprocessable_entity }
-  end
 
   def model_klass
     controller_name.classify.constantize

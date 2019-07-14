@@ -10,9 +10,7 @@ module Votable
   end
 
   def voted?(user)
-    return true if votes.exists?(user_id: user.id)
-
-    false
+    votes.exists?(user_id: user.id)
   end
 
   def new_like(user)
