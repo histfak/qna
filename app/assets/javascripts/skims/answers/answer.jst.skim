@@ -1,0 +1,64 @@
+div class="answer-#{@answer.id}"
+  br
+  p= @answer.body
+
+  .answer-voting
+    p.answer-scores
+      | Scores: 0
+
+    .answer-voting-links
+      - if gon.user_id && gon.user_id != @answer.user_id
+        p
+          a [href="/answers/#{@answer.id}/like" data-remote='true' data-type='json' data-method='patch' rel='nofollow'] Like
+        p
+          a [href="/answers/#{@answer.id}/dislike" data-remote='true' data-type='json' data-method='patch' rel='nofollow'] Dislike
+        p
+          a [href="/answers/#{@answer.id}/dislike" data-remote='true' data-type='json' data-method='patch' rel='nofollow'] Reset
+
+  / .links
+  /   p Links:
+  /   ul
+  /     - answer.links.each do |link|
+  /       - if link.gist?
+  /         li
+  /           p= link_to link.gist_fetch_content, link.url
+  /           - if current_user&.author_of?(answer)
+  /             p= link_to 'Delete link', link_path(link), method: :delete, remote: true
+  /       - else
+  /         li
+  /           p= link_to link.name, link.url
+  /           - if current_user&.author_of?(answer)
+  /             p= link_to 'Delete link', link_path(link), method: :delete, remote: true
+  /
+  / - if answer.files.attached?
+  /   - answer.files.each do |file|
+  /     p= link_to file.filename.to_s, url_for(file)
+  /     - if current_user&.author_of?(answer)
+  /       p= link_to 'Delete file', attachment_path(file), method: :delete, remote: true
+  /
+  - if gon.user_id && gon.user_id == @answer.user_id
+    p
+      a [href="#" class="edit-answer-link" data-answer-id="#{@answer.id}"] Edit
+    p
+      a [href="/answers/#{@answer.id}" data-method='delete' data-remote='true'] Delete answer
+    / - if current_user&.author_of?(answer.question) && !answer.best?
+    /   p= link_to 'Mark as the best', best_answer_path(answer), method: :patch, remote: true
+  /
+  / = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
+  /   b= f.label :body, "Edit answer:"
+  /   br
+  /   = f.text_area :body
+  /   br
+  /   br
+  /   = f.label :files
+  /   = f.file_field :files, multiple: true, direct_upload: true
+  /   br
+  /   p Links:
+  /   p
+  /     = f.fields_for :links do |l|
+  /       = render 'shared/link_fields', f: l
+  /     br
+  /     .links
+  /       = link_to_add_association 'Add link', f, :links, partial: 'shared/link_fields'
+  /   br
+  /   = f.submit 'Update answer'

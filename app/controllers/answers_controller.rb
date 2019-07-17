@@ -4,6 +4,7 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!, except: %i[show]
   before_action :load_question, only: %i[new create]
   before_action :load_answer, only: %i[show destroy update best]
+  after_action :publish_answer, only: %i[create]
 
   def show
   end
@@ -15,10 +16,17 @@ class AnswersController < ApplicationController
   def create
     @answer = @question.answers.new(answer_params)
     @answer.author = current_user
-    if @answer.save
-      flash.now[:notice] = 'Your answer has been successfully created.'
-    else
-      flash.now[:notice] = 'Something went wrong.'
+
+    respond_to do |format|
+      if @answer.save
+        format.json do
+          render json: { answer: @answer, scores: @answer.scores }
+        end
+      else
+        format.json do
+          render json: @answer.errors.full_messages, status: :unprocessable_entity
+        end
+      end
     end
   end
 
@@ -41,6 +49,11 @@ class AnswersController < ApplicationController
   end
 
   private
+
+  def publish_answer
+    return if @answer.errors.any?
+    ActionCable.server.broadcast("answers_for_question_#{@question.id}", answer: @answer )
+  end
 
   def load_question
     @question = Question.find(params[:question_id])

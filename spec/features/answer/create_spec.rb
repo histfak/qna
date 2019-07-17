@@ -46,4 +46,35 @@ feature 'User can create an answer' do
     expect(page).not_to have_content 'Write your answer:'
     expect(page).not_to have_link 'Post answer'
   end
+
+  context 'multiple sessions' do
+    given(:user) { create(:user) }
+    given(:question) { create(:question) }
+    given!(:answer) { create(:answer, question: question, author: user) }
+
+    scenario "question appears on another user's page", js: true do
+      Capybara.using_session('user') do
+        login(user)
+        visit question_path(question)
+      end
+
+      Capybara.using_session('guest') do
+        visit question_path(question)
+      end
+
+      Capybara.using_session('user') do
+        within '.new-answer' do
+          fill_in 'Your answer:', with: 'new answer body'
+          click_on 'Post answer'
+        end
+
+        expect(page).to have_content 'Your answer has been successfully created.'
+        expect(page).to have_content 'new answer body'
+      end
+
+      Capybara.using_session('guest') do
+        expect(page).to have_content 'new answer body'
+      end
+    end
+  end
 end
