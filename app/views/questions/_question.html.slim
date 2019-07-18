@@ -7,20 +7,21 @@ p= question.body
     li= question.reward.title
     li= image_tag question.reward.badge
 
-.links
-  p Links:
-  ul
-    - question.links.each do |link|
-      - if link.gist?
-        li
-          p= link_to link.gist_fetch_content, link.url
-          - if current_user&.author_of?(question)
-            p= link_to 'Delete link', link_path(link), method: :delete, remote: true
-      - else
-        li
-          p= link_to link.name, link.url
-          - if current_user&.author_of?(question)
-            p= link_to 'Delete link', link_path(link), method: :delete, remote: true
+- unless question.links.empty?
+  .links
+    p Links:
+    ul
+      - question.links.each do |link|
+        - if link.gist?
+          li
+            p= link_to link.gist_fetch_content, link.url
+            - if current_user&.author_of?(question)
+              p= link_to 'Delete link', link_path(link), method: :delete, remote: true
+        - else
+          li
+            p= link_to link.name, link.url
+            - if current_user&.author_of?(question)
+              p= link_to 'Delete link', link_path(link), method: :delete, remote: true
 
 - if question.files.attached?
   - question.files.each do |file|

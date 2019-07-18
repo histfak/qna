@@ -17,16 +17,10 @@ class AnswersController < ApplicationController
     @answer = @question.answers.new(answer_params)
     @answer.author = current_user
 
-    respond_to do |format|
-      if @answer.save
-        format.json do
-          render json: { answer: @answer, scores: @answer.scores }
-        end
-      else
-        format.json do
-          render json: @answer.errors.full_messages, status: :unprocessable_entity
-        end
-      end
+    if @answer.save
+        flash.now[:notice] = 'Your answer has been successfully created.'
+    else
+        flash.now[:notice] = 'Something went wrong.'
     end
   end
 
@@ -52,7 +46,7 @@ class AnswersController < ApplicationController
 
   def publish_answer
     return if @answer.errors.any?
-    ActionCable.server.broadcast("answers_for_question_#{@question.id}", answer: @answer )
+    ActionCable.server.broadcast("answers_for_question_#{@question.id}", answer: @answer, links: @answer.links.to_a, files: @answer.files_params )
   end
 
   def load_question
