@@ -30,3 +30,4 @@
 .idea
 .env
 /config/database.yml
+.eslintrc.yml

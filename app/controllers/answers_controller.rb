@@ -18,9 +18,9 @@ class AnswersController < ApplicationController
     @answer.author = current_user
 
     if @answer.save
-        flash.now[:notice] = 'Your answer has been successfully created.'
+      flash.now[:notice] = 'Your answer has been successfully created.'
     else
-        flash.now[:notice] = 'Something went wrong.'
+      flash.now[:notice] = 'Something went wrong.'
     end
   end
 
@@ -46,7 +46,9 @@ class AnswersController < ApplicationController
 
   def publish_answer
     return if @answer.errors.any?
-    ActionCable.server.broadcast("answers_for_question_#{@question.id}", answer: @answer, links: @answer.links.to_a, files: @answer.files_params )
+
+    ActionCable.server.broadcast("answers_for_question_#{@question.id}",
+                                 answer: @answer, links: @answer.links.to_a, files: @answer.files_params)
   end
 
   def load_question

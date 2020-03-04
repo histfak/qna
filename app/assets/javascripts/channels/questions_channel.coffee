@@ -7,4 +7,4 @@ $ ->
     ,
     received: (data) ->
       questionsList.append data
-})
+  })
