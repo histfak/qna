@@ -17,6 +17,6 @@ $ ->
           commentsList.append('<p>Comments:</p>')
           commentsList.append ->
             return '<div class="comment-' + data.comment.id + '"></div>';
-           inner = $(".comment-" + data.comment.id)
-           inner.wrapInner('<p>' + data.comment.body + '</p>')
+          inner = $(".comment-" + data.comment.id)
+          inner.wrapInner('<p>' + data.comment.body + '</p>')
   })
