@@ -9,4 +9,5 @@ $('.flash').html('<p class="notice"><%= notice %></p>');
 $('.answer-errors').html('<%= render 'shared/errors', resource: @answer %>');
 <% unless @answer.errors.present? %>
   $('.answer-<%= @answer.id %>').html('<%= j render @answer %>');
+  $('.new-answer').show();
 <% end %>

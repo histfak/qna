@@ -1,5 +1,6 @@
 class QuestionsController < ApplicationController
   include Voted
+  include Commented
 
   before_action :authenticate_user!, except: %i[index show]
   before_action :load_question, only: %i[show edit update destroy]
@@ -13,7 +14,9 @@ class QuestionsController < ApplicationController
     @answer = Answer.new
     @answers = @question.answers
     @answer.links.new
+    @comments = @question.comments
     gon.question_id = @question.id
+    gon.answer_ids = @question.answers.map { |answer| answer.id }
   end
 
   def new

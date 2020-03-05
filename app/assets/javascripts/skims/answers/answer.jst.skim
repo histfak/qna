@@ -16,15 +16,17 @@ div class="answer-#{@answer.id}"
           a [href="/answers/#{@answer.id}/dislike" data-remote='true' data-type='json' data-method='patch' rel='nofollow'] Reset
 
   .links
-    p Links:
-    ul
-      - for @link in @links
-        li
-          p
-            a [href="#{@link.url}"] #{@link.name}
+    - if @links.length > 0
+      p Links:
+      ul
+        - for @link in @links
+          li
+            p
+              a [href="#{@link.url}"] #{@link.name}
 
-  - if @files
-    p= @files
-    - for @file in @files
-      p
-        a [href="#{@file.url}"] #{@file.name}
+  .files
+    - if @files.length > 0
+      p Files:
+      - for @file in @files
+        p
+          a [href="#{@file.url}"] #{@file.name}

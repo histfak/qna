@@ -38,13 +38,24 @@ div[class="answer-#{answer.id}"]
     - if current_user&.author_of?(answer.question) && !answer.best?
       p= link_to 'Mark as the best', best_answer_path(answer), method: :patch, remote: true
 
+  .answer-comments
+    - if answer.comments.exists?
+      p Comments:
+      = render answer.comments
+
+  .answer-new-comment
+    - if !current_user&.author_of?(answer) && user_signed_in?
+      p= link_to 'Add comment', '#', class: 'comment-answer-link', data: {answer_id: answer.id}
+
+      = render 'comments/comment_form', resource: answer
+
   = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
     b= f.label :body, "Edit answer:"
     br
     = f.text_area :body
     br
     br
-    = f.label :files
+    = f.label :files, "Files: "
     = f.file_field :files, multiple: true, direct_upload: true
     br
     p Links:
