@@ -1,0 +1,32 @@
+div class="answer-#{@answer.id}"
+  br
+  p= @answer.body
+
+  .answer-voting
+    p.answer-scores
+      | Scores: 0
+
+    .answer-voting-links
+      - if gon.user_id && gon.user_id != @answer.user_id
+        p
+          a [href="/answers/#{@answer.id}/like" data-remote='true' data-type='json' data-method='patch' rel='nofollow'] Like
+        p
+          a [href="/answers/#{@answer.id}/dislike" data-remote='true' data-type='json' data-method='patch' rel='nofollow'] Dislike
+        p
+          a [href="/answers/#{@answer.id}/dislike" data-remote='true' data-type='json' data-method='patch' rel='nofollow'] Reset
+
+  .links
+    - if @links.length > 0
+      p Links:
+      ul
+        - for @link in @links
+          li
+            p
+              a [href="#{@link.url}"] #{@link.name}
+
+  .files
+    - if @files.length > 0
+      p Files:
+      - for @file in @files
+        p
+          a [href="#{@file.url}"] #{@file.name}

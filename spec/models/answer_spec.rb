@@ -5,6 +5,7 @@ RSpec.describe Answer, type: :model do
   it_behaves_like 'fileable'
   it_behaves_like 'authorable'
   it_behaves_like 'votable'
+  it_behaves_like 'commentable'
 
   let!(:user) { create(:user) }
   let!(:user2) { create(:user) }

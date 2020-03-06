@@ -1,0 +1,9 @@
+= form_with model: [resource, Comment.new], class: 'hidden', html: {id: "new-comment-#{resource.id}"}, url: polymorphic_path(resource, action: :create_comment), method: :post, remote: true, data: {type: :json} do |f|
+  = f.label :body, "Your comment:"
+  br
+  = f.text_field :body
+  br
+  = f.submit 'Post comment'
+
+.comment-errors
+  = render 'shared/errors', resource: resource

@@ -8,6 +8,17 @@
   .question-voting-links
     = render 'shared/voting_links', resource: @question
 
+.question-comments
+  - if @comments.exists?
+    p Comments:
+    = render @comments
+
+.question-new-comment
+  - if !current_user&.author_of?(@question) && user_signed_in?
+    p= link_to 'Add comment', '#', class: 'comment-question-link', data: {question_id: @question.id}
+
+    = render 'comments/comment_form', resource: @question
+
 .question-errors
 
 .answers
@@ -15,21 +26,22 @@
 
 .answer-errors
 
-= form_with model: [@question, @answer], class: 'new-answer' do |f|
-  b= f.label :body, "Your answer:"
-  br
-  = f.text_area :body
-  br
-  br
-  = f.label :files
-  = f.file_field :files, multiple: true
-  br
-  p Links:
-  p
-    = f.fields_for :links do |l|
-      = render 'shared/link_fields', f: l
+- if user_signed_in?
+  = form_with model: [@question, @answer], class: 'new-answer' do |f|
+    b= f.label :body, "Your answer:"
     br
-    .links
-      = link_to_add_association 'Add link', f, :links, partial: 'shared/link_fields'
-  br
-  = f.submit 'Post answer'
+    = f.text_area :body
+    br
+    br
+    = f.label :files, "Files: "
+    = f.file_field :files, multiple: true
+    br
+    p Links:
+    p
+      = f.fields_for :links do |l|
+        = render 'shared/link_fields', f: l
+      br
+      .links
+        = link_to_add_association 'Add link', f, :links, partial: 'shared/link_fields'
+    br
+    = f.submit 'Post answer'
