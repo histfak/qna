@@ -22,7 +22,7 @@ module Commented
   def publish_comment
     return if @comment.errors.any?
 
-    ActionCable.server.broadcast('comments', comment: @comment )
+    ActionCable.server.broadcast('comments', comment: @comment)
   end
 
   def load_commentable
