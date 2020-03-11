@@ -66,10 +66,6 @@ RSpec.describe QuestionsController, type: :controller do
     it 'assigns the requested question to @question' do
       expect(assigns(:question)).to eq question
     end
-
-    it 'renders edit view' do
-      expect(response).to render_template :edit
-    end
   end
 
   describe 'POST #create' do
@@ -146,9 +142,10 @@ RSpec.describe QuestionsController, type: :controller do
         end.to_not change(question, :body)
       end
 
-      it 'redirects to login page' do
+      it 'redirects to main page' do
         patch :update, params: { id: question, question: attributes_for(:question) }, format: :js
-        expect(response).to render_template :update
+        expect(response.content_type).to eq 'text/javascript'
+        expect(response.status).to eq(403)
       end
     end
   end
@@ -180,7 +177,7 @@ RSpec.describe QuestionsController, type: :controller do
 
         it 'redirects back to question' do
           delete :destroy, params: { id: question }
-          expect(response).to redirect_to question_path(question)
+          expect(response).to redirect_to root_url
         end
       end
     end
