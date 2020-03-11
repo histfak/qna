@@ -31,8 +31,9 @@ RSpec.describe AttachmentsController, type: :controller do
         expect(question.reload.files).to be_attached
       end
 
-      it 'renders destroy view' do
-        expect(response).to render_template :destroy
+      it 'returns 403' do
+        expect(response.content_type).to eq 'text/javascript'
+        expect(response.status).to eq(403)
       end
     end
 
@@ -61,8 +62,9 @@ RSpec.describe AttachmentsController, type: :controller do
         expect(answer.reload.files).to be_attached
       end
 
-      it 'renders destroy view' do
-        expect(response).to render_template :destroy
+      it 'returns 403' do
+        expect(response.content_type).to eq 'text/javascript'
+        expect(response.status).to eq(403)
       end
     end
 
