@@ -7,6 +7,8 @@ class AnswersController < ApplicationController
   before_action :load_answer, only: %i[show destroy update best]
   after_action :publish_answer, only: %i[create]
 
+  authorize_resource
+
   def show
   end
 
@@ -26,21 +28,17 @@ class AnswersController < ApplicationController
   end
 
   def destroy
-    if current_user.author_of?(@answer)
-      @answer.destroy
-      redirect_to question_path(@answer.question), notice: 'Your answer has been deleted.'
-    else
-      redirect_to question_path(@answer.question), alert: 'You cannot delete a foreign answer.'
-    end
+    @answer.destroy
+    redirect_to question_path(@answer.question), notice: 'Your answer has been deleted.'
   end
 
   def update
-    @answer.update(answer_params) if current_user.author_of?(@answer)
+    @answer.update(answer_params)
     @question = @answer.question
   end
 
   def best
-    @answer.set_best if current_user.author_of?(@answer.question)
+    @answer.set_best
   end
 
   private

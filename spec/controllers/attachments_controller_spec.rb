@@ -21,7 +21,7 @@ RSpec.describe AttachmentsController, type: :controller do
       end
     end
 
-    context 'User tries to delete the file which belongs to other user' do
+    context 'User tries to delete the file (question) which belongs to other user' do
       before do
         login(user)
         delete :destroy, params: { id: question.files.first }, format: :js
@@ -31,8 +31,9 @@ RSpec.describe AttachmentsController, type: :controller do
         expect(question.reload.files).to be_attached
       end
 
-      it 'renders destroy view' do
-        expect(response).to render_template :destroy
+      it 'returns 403' do
+        expect(response.content_type).to eq 'text/javascript'
+        expect(response.status).to eq(403)
       end
     end
 
@@ -51,7 +52,7 @@ RSpec.describe AttachmentsController, type: :controller do
       end
     end
 
-    context 'User tries to delete the attached file which belongs to other user' do
+    context 'User tries to delete the file (answer) which belongs to other user' do
       before do
         login(user)
         delete :destroy, params: { id: answer.files.first }, format: :js
@@ -61,8 +62,9 @@ RSpec.describe AttachmentsController, type: :controller do
         expect(answer.reload.files).to be_attached
       end
 
-      it 'renders destroy view' do
-        expect(response).to render_template :destroy
+      it 'returns 403' do
+        expect(response.content_type).to eq 'text/javascript'
+        expect(response.status).to eq(403)
       end
     end
 

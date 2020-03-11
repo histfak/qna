@@ -6,6 +6,8 @@ class QuestionsController < ApplicationController
   before_action :load_question, only: %i[show edit update destroy]
   after_action :publish_question, only: %i[create]
 
+  authorize_resource
+
   def index
     @questions = Question.all
   end
@@ -38,16 +40,12 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    @question.update(question_params) if current_user.author_of?(@question)
+    @question.update(question_params)
   end
 
   def destroy
-    if current_user.author_of?(@question)
-      @question.destroy
-      redirect_to questions_path, notice: 'Your question has been deleted.'
-    else
-      redirect_to question_path(@question), alert: 'You cannot delete a foreign question.'
-    end
+    @question.destroy
+    redirect_to questions_path, notice: 'Your question has been deleted.'
   end
 
   private

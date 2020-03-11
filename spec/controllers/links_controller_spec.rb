@@ -30,9 +30,10 @@ RSpec.describe LinksController, type: :controller do
         expect { delete :destroy, params: { id: question.links.first }, format: :js }.not_to change(Link, :count)
       end
 
-      it 'renders destroy view' do
+      it 'returns 403' do
         delete :destroy, params: { id: question.links.first }, format: :js
-        expect(response).to render_template :destroy
+        expect(response.content_type).to eq 'text/javascript'
+        expect(response.status).to eq(403)
       end
     end
 
@@ -60,9 +61,10 @@ RSpec.describe LinksController, type: :controller do
         expect { delete :destroy, params: { id: answer.links.first }, format: :js }.not_to change(Link, :count)
       end
 
-      it 'renders destroy view' do
+      it 'returns 403' do
         delete :destroy, params: { id: answer.links.first }, format: :js
-        expect(response).to render_template :destroy
+        expect(response.content_type).to eq 'text/javascript'
+        expect(response.status).to eq(403)
       end
     end
 
