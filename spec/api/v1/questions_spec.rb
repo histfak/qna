@@ -3,6 +3,9 @@ require 'rails_helper'
 describe 'Questions API', type: :request do
   QUESTION_PUBLIC_FIELDS = %w[id title body created_at updated_at].freeze
   ANSWER_PUBLIC_FIELDS = %w[id body created_at updated_at].freeze
+  COMMENT_PUBLIC_FIELDS = %w[id body created_at updated_at].freeze
+  LINK_PUBLIC_FIELDS = %w[id name url created_at updated_at].freeze
+  FILE_PUBLIC_FIELDS = %w[id url filename created_at].freeze
 
   let(:headers) {
     { 'CONTENT_TYPE' => 'application/json',
@@ -60,8 +63,9 @@ describe 'Questions API', type: :request do
   end
 
   describe 'GET /api/v1/questions/:id' do
-    let!(:user) { create(:user) }
-    let!(:question) { create(:question, :with_files) }
+    let(:user) { create(:user) }
+    let(:question) { create(:question, :with_files) }
+    let!(:answers) { (create_list(:answer, 3, question: question)) }
     let!(:links) { (create_list(:link, 3, linkable: question)) }
     let!(:comments) { (create_list(:comment, 2, author: user, commentable: question)) }
     let(:api_path) { "/api/v1/questions/#{question.id}" }
@@ -96,6 +100,21 @@ describe 'Questions API', type: :request do
         expect(json['question']['author']['id']).to eq question.author.id
       end
 
+      describe 'answers' do
+        let(:answer) { answers.first }
+        let(:answer_response) { json['question']['answers'].last }
+
+        it 'contains answers' do
+          expect(json['question']['answers'].size).to eq 3
+        end
+
+        it 'answer has needed fields' do
+          ANSWER_PUBLIC_FIELDS.each do |attr|
+            expect(answer_response[attr]).to eq answer.send(attr).as_json
+          end
+        end
+      end
+
       describe 'comments' do
         let(:comment) { comments.first }
         let(:comment_response) { json['question']['comments'].last }
@@ -105,7 +124,7 @@ describe 'Questions API', type: :request do
         end
 
         it 'comment has needed fields' do
-          %w[id body created_at updated_at].each do |attr|
+          COMMENT_PUBLIC_FIELDS.each do |attr|
             expect(comment_response[attr]).to eq comment.send(attr).as_json
           end
         end
@@ -120,7 +139,7 @@ describe 'Questions API', type: :request do
         end
 
         it 'link has needed fields' do
-          %w[id name url created_at updated_at].each do |attr|
+          LINK_PUBLIC_FIELDS.each do |attr|
             expect(link_response[attr]).to eq link.send(attr).as_json
           end
         end
@@ -135,10 +154,34 @@ describe 'Questions API', type: :request do
         end
 
         it 'file has needed fields' do
-          %w[id url filename created_at].each do |attr|
+          FILE_PUBLIC_FIELDS.each do |attr|
             expect(file_response[attr]).to eq attr == 'url' ? Rails.application.routes.url_helpers.rails_blob_url(file, only_path: true)\
                                                             : file.send(attr).as_json
           end
+        end
+      end
+    end
+  end
+
+  describe 'POST /api/v1/questions' do
+    let(:headers) { { 'ACCEPT' => 'application/json' } }
+    let(:api_path) { '/api/v1/questions' }
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :post }
+    end
+
+    context 'authorized' do
+      context 'valid attributes' do
+        let(:access_token) { create(:access_token) }
+
+        before { post api_path, params: { access_token: access_token.token, question: attributes_for(:question) } }
+
+        it 'returns 200 status' do
+          expect(response).to be_successful
+        end
+
+        it 'saves a new question to the database' do
+          expect { post api_path, params: { access_token: access_token.token, question: attributes_for(:question) } }.to change(Question, :count).by(1)
         end
       end
     end

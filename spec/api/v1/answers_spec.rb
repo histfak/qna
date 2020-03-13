@@ -2,6 +2,9 @@ require 'rails_helper'
 
 describe 'Answers API', type: :request do
   ANSWER_PUBLIC_FIELDS = %w[id body created_at updated_at].freeze
+  COMMENT_PUBLIC_FIELDS = %w[id body created_at updated_at].freeze
+  LINK_PUBLIC_FIELDS = %w[id name url created_at updated_at].freeze
+  FILE_PUBLIC_FIELDS = %w[id url filename created_at].freeze
 
   let(:headers) {
     { 'CONTENT_TYPE' => 'application/json',
@@ -9,9 +12,9 @@ describe 'Answers API', type: :request do
   }
 
   describe 'GET /api/v1/answers/:id' do
-    let!(:user) { create(:user) }
-    let!(:question) { create(:question) }
-    let!(:answer) { create(:answer, :with_files, question: question) }
+    let(:user) { create(:user) }
+    let(:question) { create(:question) }
+    let(:answer) { create(:answer, :with_files, question: question) }
     let!(:links) { (create_list(:link, 3, linkable: answer)) }
     let!(:comments) { (create_list(:comment, 2, author: user, commentable: answer)) }
     let(:api_path) { "/api/v1/answers/#{answer.id}" }
@@ -55,7 +58,7 @@ describe 'Answers API', type: :request do
         end
 
         it 'comment has needed fields' do
-          %w[id body created_at updated_at].each do |attr|
+          COMMENT_PUBLIC_FIELDS.each do |attr|
             expect(comment_response[attr]).to eq comment.send(attr).as_json
           end
         end
@@ -70,7 +73,7 @@ describe 'Answers API', type: :request do
         end
 
         it 'link has needed fields' do
-          %w[id name url created_at updated_at].each do |attr|
+          LINK_PUBLIC_FIELDS.each do |attr|
             expect(link_response[attr]).to eq link.send(attr).as_json
           end
         end
@@ -85,7 +88,7 @@ describe 'Answers API', type: :request do
         end
 
         it 'file has needed fields' do
-          %w[id url filename created_at].each do |attr|
+          FILE_PUBLIC_FIELDS.each do |attr|
             expect(file_response[attr]).to eq attr == 'url' ? Rails.application.routes.url_helpers.rails_blob_url(file, only_path: true)\
                                                             : file.send(attr).as_json
           end
