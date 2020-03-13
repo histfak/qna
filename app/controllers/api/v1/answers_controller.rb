@@ -1,8 +1,7 @@
 class Api::V1::AnswersController < Api::V1::BaseController
-  authorize_resource
+  load_and_authorize_resource
 
-  def index
-    @answers = Answer.all
-    render json: @answers
+  def show
+    render json: @answer
   end
 end
