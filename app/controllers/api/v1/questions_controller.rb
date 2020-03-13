@@ -2,8 +2,7 @@ class Api::V1::QuestionsController < Api::V1::BaseController
   load_and_authorize_resource
 
   def index
-    @questions = Question.all
-    render json: @questions
+    render json: questions
   end
 
   def show
@@ -19,7 +18,24 @@ class Api::V1::QuestionsController < Api::V1::BaseController
     end
   end
 
+  def update
+    if @question.update(question_params)
+      render json: @question
+    else
+      head :unprocessable_entity
+    end
+  end
+
+  def destroy
+    @question.destroy
+    render json: questions
+  end
+
   private
+
+  def questions
+    Question.all
+  end
 
   def question_params
     params.require(:question).permit(:title, :body)
