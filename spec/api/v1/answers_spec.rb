@@ -111,7 +111,7 @@ describe 'Answers API', type: :request do
         let(:question) { create(:question) }
         let(:answer) { Answer.last }
 
-        before { post api_path, params: { access_token: access_token.token, answer: attributes_for(:answer) } }
+        before { post api_path, params: { access_token: access_token.token, answer: attributes_for(:answer) }, headers: headers }
 
         it 'returns 200 status' do
           expect(response).to be_successful
@@ -131,7 +131,7 @@ describe 'Answers API', type: :request do
       context 'invalid attributes' do
         let(:access_token) { create(:access_token) }
 
-        before { post api_path, params: { access_token: access_token.token, answer: attributes_for(:answer, :invalid) } }
+        before { post api_path, params: { access_token: access_token.token, answer: attributes_for(:answer, :invalid) }, headers: headers }
 
         it 'returns 422 status' do
           expect(response).to have_http_status :unprocessable_entity
@@ -159,7 +159,7 @@ describe 'Answers API', type: :request do
         let(:access_token) { create(:access_token, resource_owner_id: author.id).token }
 
         context 'valid attributes' do
-          before { patch api_path, params: { access_token: access_token, answer: { body: 'new body' } } }
+          before { patch api_path, params: { access_token: access_token, answer: { body: 'new body' } }, headers: headers }
 
           it 'returns 200 status' do
             expect(response).to be_successful
@@ -177,7 +177,7 @@ describe 'Answers API', type: :request do
         end
 
         context 'invalid attributes' do
-          before { patch api_path, params: { access_token: access_token, answer: attributes_for(:answer, :invalid) } }
+          before { patch api_path, params: { access_token: access_token, answer: attributes_for(:answer, :invalid) }, headers: headers }
 
           it 'returns 422 status' do
             expect(response).to have_http_status :unprocessable_entity
@@ -198,19 +198,85 @@ describe 'Answers API', type: :request do
         let(:access_token) { create(:access_token).token }
         let!(:answer) { create(:answer) }
 
-        before { patch api_path, params: { access_token: access_token, answer: { body: 'new body' } } }
+        before { patch api_path, params: { access_token: access_token, answer: { body: 'new body' } }, headers: headers }
 
-        it 'returns 302 status' do
-          expect(response).to have_http_status :redirect
+        it 'returns 403 status in json answer' do
+          expect(json['status']).to eq 403
         end
 
         it 'does not change answer' do
           answer_public_fields.each do |attr|
             expect do
-              patch api_path, params: { id: answer, answer: { body: 'new body' } }
+              patch api_path, params: { id: answer, answer: { body: 'new body' }, headers: headers }
               answer.reload
             end.to_not change(answer, attr)
           end
+        end
+      end
+    end
+  end
+
+  describe 'DELETE /api/v1/questions/:id' do
+    let(:author) { create(:user) }
+    let!(:answer) { create(:answer, author: author) }
+    let(:headers) { { 'ACCEPT' => 'application/json' } }
+    let(:api_path) { "/api/v1/answers/#{answer.id}" }
+
+    it_behaves_like 'API Authorizable' do
+      let(:method) { :delete }
+    end
+
+    context 'authorized' do
+      context 'author' do
+        let(:access_token) { create(:access_token, resource_owner_id: author.id).token }
+
+        before { delete api_path, params: { access_token: access_token, id: answer }, headers: headers }
+
+        it 'returns 200 status' do
+          expect(response).to be_successful
+        end
+
+        it 'deletes answer in DB' do
+          expect { answer.reload }.to raise_error ActiveRecord::RecordNotFound
+        end
+      end
+
+      context 'not author' do
+        let(:access_token) { create(:access_token).token }
+        let!(:answer) { create(:answer) }
+
+        before { delete api_path, params: { access_token: access_token, id: answer }, headers: headers }
+
+        it 'returns 403 status in json answer' do
+          expect(json['status']).to eq 403
+        end
+
+        it 'does not change answer' do
+          answer_public_fields.each do |attr|
+            expect do
+              delete api_path, params: { access_token: access_token, id: answer }, headers: headers
+              answer.reload
+            end.to_not change(answer, attr)
+          end
+        end
+      end
+    end
+
+    context 'unauthorized' do
+      let!(:answer) { create(:answer) }
+
+      before { delete api_path, params: { id: answer }, headers: headers }
+
+      it 'returns 401 status' do
+        expect(response).to have_http_status 401
+      end
+
+      it 'does not change question' do
+        answer_public_fields.each do |attr|
+          expect do
+            delete api_path, params: { id: answer }, headers: headers
+            answer.reload
+          end.to_not change(answer, attr)
         end
       end
     end
