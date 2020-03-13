@@ -8,7 +8,8 @@ class User < ApplicationRecord
   has_many :questions, dependent: :destroy
   has_many :answers, dependent: :destroy
   has_many :rewards
-  has_many :votes
+  has_many :votes, dependent: :destroy
+  has_many :comments, dependent: :destroy
   has_many :authorizations, dependent: :destroy
 
   def self.find_for_oauth(auth)
