@@ -1,4 +1,12 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
+  mount ActionCable.server => '/cable'
+
+  authenticate :user, lambda { |u| u.admin? } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
+
   use_doorkeeper
   devise_for :users, controllers: { omniauth_callbacks: 'oauth_callbacks' }
   root to: 'questions#index'
@@ -35,6 +43,4 @@ Rails.application.routes.draw do
       end
     end
   end
-
-  mount ActionCable.server => '/cable'
 end

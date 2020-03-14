@@ -257,7 +257,7 @@ describe 'Questions API', type: :request do
               expect do
                 patch api_path, params: { id: question, question: attributes_for(:question, :invalid) }
                 question.reload
-              end.to_not change(question, attr)
+              end.to_not change(question, attr.to_sym)
             end
           end
         end
@@ -278,7 +278,7 @@ describe 'Questions API', type: :request do
             expect do
               patch api_path, params: { id: question, question: { title: 'new title', body: 'new body' } }
               question.reload
-            end.to_not change(question, attr)
+            end.to_not change(question, attr.to_sym)
           end
         end
       end
@@ -325,7 +325,7 @@ describe 'Questions API', type: :request do
             expect do
               delete api_path, params: { access_token: access_token, id: question }, headers: headers
               question.reload
-            end.to_not change(question, attr)
+            end.to_not change(question, attr.to_sym)
           end
         end
       end
@@ -345,7 +345,7 @@ describe 'Questions API', type: :request do
           expect do
             delete api_path, params: { id: question }, headers: headers
             question.reload
-          end.to_not change(question, attr)
+          end.to_not change(question, attr.to_sym)
         end
       end
     end
