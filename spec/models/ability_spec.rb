@@ -21,10 +21,8 @@ describe Ability do
 
   describe 'for user' do
     let(:user) { create :user }
-    let(:user2) { create :user }
     let(:question) { create :question }
     let(:answer) { create :answer }
-    let(:answer2) { create :answer, question: user_question }
     let(:user_question) { create :question, author: user }
     let!(:answer2) { create :answer, question: user_question }
     let(:user_answer) { create :answer, author: user }
@@ -62,5 +60,9 @@ describe Ability do
 
     it { should be_able_to [:like, :dislike, :reset], question }
     it { should be_able_to [:like, :dislike, :reset], answer }
+
+    it { should be_able_to :create, Subscription }
+    it { should be_able_to :destroy, create(:subscription, user: user) }
+    it { should_not be_able_to :destroy, create(:subscription) }
   end
 end

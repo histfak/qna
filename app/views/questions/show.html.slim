@@ -8,6 +8,10 @@
   .question-voting-links
     = render 'shared/voting_links', resource: @question
 
+.question-subscribe
+  - if user_signed_in?
+    p= link_to 'Subscribe', '#'
+
 .question-comments
   - if @comments.exists?
     p Comments:
