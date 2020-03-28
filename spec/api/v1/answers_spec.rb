@@ -188,7 +188,7 @@ describe 'Answers API', type: :request do
               expect do
                 patch api_path, params: { id: answer, answer: attributes_for(:answer, :invalid) }
                 answer.reload
-              end.to_not change(answer, attr)
+              end.to_not change(answer, attr.to_sym)
             end
           end
         end
@@ -209,7 +209,7 @@ describe 'Answers API', type: :request do
             expect do
               patch api_path, params: { id: answer, answer: { body: 'new body' }, headers: headers }
               answer.reload
-            end.to_not change(answer, attr)
+            end.to_not change(answer, attr.to_sym)
           end
         end
       end
@@ -256,7 +256,7 @@ describe 'Answers API', type: :request do
             expect do
               delete api_path, params: { access_token: access_token, id: answer }, headers: headers
               answer.reload
-            end.to_not change(answer, attr)
+            end.to_not change(answer, attr.to_sym)
           end
         end
       end
@@ -276,7 +276,7 @@ describe 'Answers API', type: :request do
           expect do
             delete api_path, params: { id: answer }, headers: headers
             answer.reload
-          end.to_not change(answer, attr)
+          end.to_not change(answer, attr.to_sym)
         end
       end
     end

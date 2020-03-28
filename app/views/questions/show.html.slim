@@ -8,6 +8,12 @@
   .question-voting-links
     = render 'shared/voting_links', resource: @question
 
+.question-subscribe
+  - if can?(:create, Subscription) && !@question.subscription(current_user)
+    p= link_to 'Subscribe', question_subscriptions_path(@question), method: :post
+  - if can?(:destroy, @question.subscription(current_user))
+    p= link_to 'Unsubscribe', subscription_path(@question.subscription(current_user)), method: :delete
+
 .question-comments
   - if @comments.exists?
     p Comments:

@@ -1,7 +1,7 @@
 class Api::V1::AnswersController < Api::V1::BaseController
   load_and_authorize_resource
 
-  before_action :load_question, only: %i[index create]
+  before_action :load_question, only: :create
 
   def show
     render json: @answer
