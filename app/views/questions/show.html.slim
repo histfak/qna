@@ -9,8 +9,10 @@
     = render 'shared/voting_links', resource: @question
 
 .question-subscribe
-  - if user_signed_in?
-    p= link_to 'Subscribe', '#'
+  - if can?(:create, Subscription) && !@question.subscription(current_user)
+    p= link_to 'Subscribe', question_subscriptions_path(@question), method: :post
+  - if can?(:destroy, @question.subscription(current_user))
+    p= link_to 'Unsubscribe', subscription_path(@question.subscription(current_user)), method: :delete
 
 .question-comments
   - if @comments.exists?

@@ -1,6 +1,9 @@
 FactoryBot.define do
   factory :question do
-    title { "MyQuestionString" }
+    # title { "MyQuestionString" }
+    sequence :title do |n|
+      "MyQuestionString #{n}"
+    end
     body { "MyQuestionText" }
     association :author, factory: :user
 

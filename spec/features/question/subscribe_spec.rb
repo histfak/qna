@@ -2,9 +2,7 @@ require 'rails_helper'
 
 feature 'User can edit his question' do
   given(:user) { create(:user) }
-  given(:author) { create(:user) }
   given(:question) { create(:question) }
-  given(:own_question) { create(:question, author: author) }
 
   scenario 'Unauthenticated user cannot subscribe to a question' do
     visit question_path(question)
@@ -22,8 +20,9 @@ feature 'User can edit his question' do
       visit question_path(question)
 
       within '.question-subscribe' do
-        expect(page).to have_link 'Subscribe'
-        expect(page).not_to have_link 'Unsubscribe'
+        click_on 'Subscribe'
+        expect(page).not_to have_link 'Subscribe'
+        expect(page).to have_link 'Unsubscribe'
       end
     end
 
@@ -40,9 +39,13 @@ feature 'User can edit his question' do
     end
 
     scenario 'owner unsubscribes to a question', js: true do
-      login(author)
+      login(user)
 
-      visit question_path(own_question)
+      visit new_question_path
+
+      fill_in 'Title', with: 'Test question'
+      fill_in 'Body', with: 'text text text'
+      click_on 'Ask'
 
       within '.question-subscribe' do
         expect(page).not_to have_link 'Subscribe'

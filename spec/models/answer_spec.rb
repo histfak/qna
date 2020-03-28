@@ -40,4 +40,13 @@ RSpec.describe Answer, type: :model do
     question.answers.first.set_best
     expect(question.answers.first.author).to eq(reward.user)
   end
+
+  describe 'question_subscription_job' do
+    let(:answer) { build(:answer) }
+
+    it 'calls QuestionSubscriptionJob' do
+      expect(QuestionSubscriptionJob).to receive(:perform_later).with(answer)
+      answer.save!
+    end
+  end
 end
