@@ -3,7 +3,7 @@ require 'sphinx_helper'
 feature 'Search' do
   describe 'Authenticated user' do
     given(:user) { create(:user) }
-    given!(:match_question) { create(:question, title: 'phrase') }
+    given!(:match_question) { create(:question, body: 'phrase') }
     given!(:questions) { create_list(:question, 3) }
     given!(:match_answer) { create(:answer, body: 'phrase') }
     given!(:answers) { create_list(:answer, 3) }
@@ -32,6 +32,7 @@ feature 'Search' do
 
         expect(page).to have_content '1 result(s):'
         expect(page).to have_content match_answer.body
+        expect(page).not_to have_content match_question.title
       end
     end
 
