@@ -31,3 +31,5 @@
 .env
 /config/database.yml
 .eslintrc.yml
+/config/*.sphinx.conf
+/db/sphinx

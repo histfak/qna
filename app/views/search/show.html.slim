@@ -1,0 +1,14 @@
+- if @result.size == 0
+  h1 Nothing
+- else
+  h1= "#{@result.size} result(s):"
+  - @result.each do |result|
+    - case result.class.to_s
+    - when 'Question'
+      p= link_to "#{result.title}", result
+    - when 'Answer'
+      p= link_to "#{result.body}", result.question
+    - when 'Comment'
+      p= link_to "#{result.body}", result.commentable
+    - when 'User'
+      p= "User: #{result.email}"

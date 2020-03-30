@@ -27,6 +27,8 @@ class Ability
 
   def user_abilities
     guest_abilities
+    can :search, [Question, Answer, Comment, User, ThinkingSphinx]
+
     can :create, [Question, Answer, Subscription]
     can :update, [Question, Answer], user_id: user.id
     can :destroy, [Question, Answer, Subscription], user_id: user.id
