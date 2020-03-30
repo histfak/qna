@@ -18,6 +18,8 @@ html
       = link_to "Log out", destroy_user_session_path, method: :delete
       br
       = link_to 'Rewards', rewards_path
+      br
+      = render 'search/form'
     .flash
       p class="notice"
         = notice

@@ -11,7 +11,7 @@
 .question-subscribe
   - if can?(:create, Subscription) && !@question.subscription(current_user)
     p= link_to 'Subscribe', question_subscriptions_path(@question), method: :post
-  - if can?(:destroy, @question.subscription(current_user))
+  - if can?(:destroy, @question.subscription(current_user)) && @question.subscription(current_user)
     p= link_to 'Unsubscribe', subscription_path(@question.subscription(current_user)), method: :delete
 
 .question-comments

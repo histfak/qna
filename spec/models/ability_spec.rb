@@ -64,5 +64,7 @@ describe Ability do
     it { should be_able_to :create, Subscription }
     it { should be_able_to :destroy, create(:subscription, user: user) }
     it { should_not be_able_to :destroy, create(:subscription) }
+
+    it { should be_able_to :search, Question, Answer, Comment, User }
   end
 end
