@@ -12,12 +12,13 @@ html
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
 
   body
-  .main
-    = render 'shared/header'
-    .flash
-      p class="notice"
-        = notice
-      p class="alert"
-        = alert
-    .errors
-    = yield
+    div[class='parent']
+      .main
+        = render 'shared/header'
+        .flash
+          p class='notice'
+            = notice
+          p class='alert'
+            = alert
+        .errors
+        = yield

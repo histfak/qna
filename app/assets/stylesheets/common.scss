@@ -3,8 +3,24 @@
 .main {
   margin: 2%;
   line-height: 160%;
+  word-wrap: break-word;
+}
+
+.header {
+  text-align: center;
+}
+
+.parent {
+  display: table;
+  margin: 0 auto;
+  width: 50%;
+  border: solid 1px #00CCFF;
+  background-color: #FCFCFC;
+  padding: 24px;
 }
 
 label { padding-right: 4px }
 
 .search-input { margin-left: 4px }
+
+.new-answer { border-top: 1px solid #00CCFF }

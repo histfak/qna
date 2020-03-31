@@ -1,5 +1,4 @@
-div[class="answer-#{answer.id}"]
-  br
+div[class="answer-#{answer.id}" style="border-top: 1px solid #00CCFF;"]
   p= answer.body
 
   .answer-voting
@@ -21,7 +20,7 @@ div[class="answer-#{answer.id}"]
                 p= link_to 'Delete link', link_path(link), method: :delete, remote: true
           - else
             li
-              p= link_to link.name, link.url
+              p= link_to link.name, link.url, target: :_blank, data: { confirm: "Are you sure?" }
               - if can?(:edit, answer)
                 p= link_to 'Delete link', link_path(link), method: :delete, remote: true
 
@@ -58,11 +57,10 @@ div[class="answer-#{answer.id}"]
     = f.label :files, 'Files:'
     = f.file_field :files, multiple: true, direct_upload: true
     br
-    p
-      = f.fields_for :links do |l|
-        = render 'shared/link_fields', f: l
-      br
-      .links
-        = link_to_add_association 'Add link', f, :links, partial: 'shared/link_fields'
+    = f.fields_for :links do |l|
+      = render 'shared/link_fields', f: l
+    br
+    .links
+      = link_to_add_association 'Add link', f, :links, partial: 'shared/link_fields'
     br
     = f.submit 'Update answer'

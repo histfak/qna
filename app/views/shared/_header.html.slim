@@ -1,4 +1,5 @@
-h1= link_to "QnA", root_url
+h1[class='header']
+  = link_to "QnA", root_url
 - if !user_signed_in?
   = link_to "Log in", new_user_session_path
   '  or
