@@ -1,6 +1,10 @@
-p Achieved rewards
-- @rewards.each do |reward|
+- if @rewards.empty?
+  h3 You have no rewards
+- else
+  h3 Achieved rewards:
   ul
-    li= reward.title
-    li= reward.question.title
-    li= image_tag reward.badge
+  - @rewards.each do |reward|
+    li
+      p= reward.title
+      p= reward.question.title
+      p= image_tag reward.badge

@@ -42,12 +42,8 @@
     = f.label :files, "Files: "
     = f.file_field :files, multiple: true
     br
-    p Links:
-    p
-      = f.fields_for :links do |l|
-        = render 'shared/link_fields', f: l
-      br
-      .links
-        = link_to_add_association 'Add link', f, :links, partial: 'shared/link_fields'
+    br
+    .links
+      = link_to_add_association 'Add link', f, :links, partial: 'shared/link_fields'
     br
     = f.submit 'Post answer'

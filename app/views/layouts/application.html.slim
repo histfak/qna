@@ -12,14 +12,8 @@ html
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
 
   body
-    - if user_signed_in?
-      = "Hello, #{current_user.email}"
-      br
-      = link_to "Log out", destroy_user_session_path, method: :delete
-      br
-      = link_to 'Rewards', rewards_path
-      br
-      = render 'search/form'
+  .main
+    = render 'shared/header'
     .flash
       p class="notice"
         = notice

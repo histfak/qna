@@ -14,6 +14,8 @@ feature 'User can add links to answer' do
     within '.new-answer' do
       fill_in 'Your answer:', with: 'new answer body'
 
+      click_on 'Add link'
+
       fill_in 'Link name', with: 'My link'
       fill_in 'URL', with: regular_url
 
@@ -32,6 +34,8 @@ feature 'User can add links to answer' do
     within '.new-answer' do
       fill_in 'Your answer:', with: 'new answer body'
 
+      click_on 'Add link'
+
       fill_in 'Link name', with: 'My gist'
       fill_in 'URL', with: invalid_url
 
@@ -49,6 +53,8 @@ feature 'User can add links to answer' do
 
     within '.new-answer' do
       fill_in 'Your answer:', with: 'new answer body'
+
+      click_on 'Add link'
 
       fill_in 'Link name', with: 'My gist'
       fill_in 'URL', with: gist_url

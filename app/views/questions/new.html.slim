@@ -21,7 +21,6 @@
       = r.label :badge, 'Badge'
       = r.file_field :badge, direct_upload: true
 
-  p Links:
   p
     = f.fields_for :links do |l|
       = render 'shared/link_fields', f: l

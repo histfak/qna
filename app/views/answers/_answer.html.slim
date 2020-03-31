@@ -50,15 +50,14 @@ div[class="answer-#{answer.id}"]
       = render 'comments/comment_form', resource: answer
 
   = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
-    b= f.label :body, "Edit answer:"
+    b= f.label :body, 'Edit answer:'
     br
     = f.text_area :body
     br
     br
-    = f.label :files, "Files: "
+    = f.label :files, 'Files:'
     = f.file_field :files, multiple: true, direct_upload: true
     br
-    p Links:
     p
       = f.fields_for :links do |l|
         = render 'shared/link_fields', f: l
