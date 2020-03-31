@@ -1,33 +1,33 @@
 = render 'shared/errors', resource: @question
 
-= form_with model: @question, local: true do |f|
-  p
-    = f.label :title
-    = f.text_field :title
-  p
-    = f.label :body
-    = f.text_area :body
-  p
-    = f.label :files
-    = f.file_field :files, multiple: true, direct_upload: true
+.question-errors
 
-  p Reward:
-  p
-    = f.fields_for :reward do |r|
-      = r.label :title, 'Reward'
-      = r.text_field :title
-      br
-      br
-      = r.label :badge, 'Badge'
-      = r.file_field :badge, direct_upload: true
-
-  p
-    = f.fields_for :links do |l|
-      = render 'shared/link_fields', f: l
+= form_with model: @question do |f|
+  br
+  = f.label :title, 'Title:'
+  = f.text_field :title
+  br
+  br
+  = f.label :body, 'Body:'
+  = f.text_area :body
+  br
+  br
+  = f.label :files, 'Files:'
+  = f.file_field :files, multiple: true, direct_upload: true
+  br
+  br
+  = f.fields_for :reward do |r|
+    = r.label :title, 'Reward:'
+    = r.text_field :title
     br
-    .links
-      = link_to_add_association 'Add link', f, :links, partial: 'shared/link_fields'
+    br
+    = r.label :badge, 'Badge:'
+    = r.file_field :badge, direct_upload: true
+    br
+    br
+  .links
+    = link_to_add_association 'Add link', f, :links, partial: 'shared/link_fields'
+  br
+  = f.submit 'Ask'
 
-  p= f.submit 'Ask'
-
-= link_to 'Back', questions_path
+p= link_to 'Back', questions_path
