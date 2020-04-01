@@ -33,7 +33,7 @@ class QuestionsController < ApplicationController
       @question.subscribe!(current_user)
       redirect_to @question, notice: 'Your question has been successfully created.'
     else
-      render :new
+      flash.now[:notice] = 'Something went wrong.'
     end
   end
 

@@ -6,12 +6,14 @@ feature 'User can add links to question' do
   given(:invalid_url) { 'foobar' }
   given(:regular_url) { 'http:/google.com' }
 
-  scenario 'User adds link when asks question' do
+  scenario 'User adds link when asks question', js: true do
     login(user)
     visit new_question_path
 
     fill_in 'Title', with: 'Test question'
     fill_in 'Body', with: 'text text text'
+
+    click_on 'Add link'
 
     fill_in 'Link name', with: 'My link'
     fill_in 'URL', with: regular_url
@@ -21,12 +23,14 @@ feature 'User can add links to question' do
     expect(page).to have_link 'My link', href: regular_url
   end
 
-  scenario 'User adds invalid link when asks question' do
+  scenario 'User adds invalid link when asks question', js: true do
     login(user)
     visit new_question_path
 
     fill_in 'Title', with: 'Test question'
     fill_in 'Body', with: 'text text text'
+
+    click_on 'Add link'
 
     fill_in 'Link name', with: 'My link'
     fill_in 'URL', with: invalid_url
@@ -36,12 +40,14 @@ feature 'User can add links to question' do
     expect(page).to have_content 'Links url is invalid'
   end
 
-  scenario 'User adds gist link when asks question' do
+  scenario 'User adds gist link when asks question', js: true do
     login(user)
     visit new_question_path
 
     fill_in 'Title', with: 'Test question'
     fill_in 'Body', with: 'text text text'
+
+    click_on 'Add link'
 
     fill_in 'Link name', with: 'My gist'
     fill_in 'URL', with: gist_url

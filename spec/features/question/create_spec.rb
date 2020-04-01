@@ -10,7 +10,7 @@ feature 'User can create a question' do
       click_on 'Ask question'
     end
 
-    scenario 'asks a question' do
+    scenario 'asks a question', js: true do
       fill_in 'Title', with: 'Test question'
       fill_in 'Body', with: 'text text text'
       click_on 'Ask'
@@ -20,13 +20,13 @@ feature 'User can create a question' do
       expect(page).to have_content 'text text text'
     end
 
-    scenario 'asks a question with errors' do
+    scenario 'asks a question with errors', js: true do
       click_on 'Ask'
 
       expect(page).to have_content "Title can't be blank"
     end
 
-    scenario 'asks a question with attached file' do
+    scenario 'asks a question with attached file', js: true do
       fill_in 'Title', with: 'Test question'
       fill_in 'Body', with: 'text text text'
 

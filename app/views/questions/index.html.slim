@@ -2,8 +2,9 @@
   p= link_to 'Ask question', new_question_path
 
 .questions-list
+  br
   b List of available questions:
   br
+  ul
   - @questions.each do |question|
-    br
-    = link_to question.title, question
+    li= link_to question.title, question

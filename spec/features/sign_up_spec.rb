@@ -9,14 +9,18 @@ feature 'User can sign up' do
 
   scenario 'Unregistered user tries to sign up' do
     fill_in 'Password confirmation', with: '12345678'
-    click_on 'Sign up'
+    within '.actions' do
+      click_on 'Sign up'
+    end
 
     expect(page).to have_content 'Welcome! You have signed up successfully.'
   end
 
   scenario 'Unregistered user tries to sign up with confirmation error' do
     fill_in 'Password confirmation', with: '87654321'
-    click_on 'Sign up'
+    within '.actions' do
+      click_on 'Sign up'
+    end
 
     expect(page).not_to have_content 'Welcome! You have signed up successfully.'
   end

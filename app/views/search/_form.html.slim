@@ -2,7 +2,7 @@
   br
   = form_with url: search_path, local: true, method: :get do |f|
     = f.select :search_type, search_types
+    = f.submit 'Search', class: 'search-input'
     br
-    = f.label :query, 'Search'
+    = f.label :query, 'Search', class: 'hidden'
     = f.text_field :query
-    = f.submit 'Search'

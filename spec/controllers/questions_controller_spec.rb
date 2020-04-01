@@ -74,29 +74,29 @@ RSpec.describe QuestionsController, type: :controller do
     context 'with valid attrs' do
       it 'saves a new question in the database' do
         new_question_attributes = attributes_for(:question)
-        expect { post :create, params: { question: new_question_attributes } }.to change(Question, :count).by(1)
+        expect { post :create, params: { question: new_question_attributes }, format: :js }.to change(Question, :count).by(1)
         new_question = user.questions.find_by! new_question_attributes
         expect(user).to be_author_of(new_question)
       end
 
       it 'creates a subscription for author' do
-        expect { post :create, params: { question: attributes_for(:question) } }.to change(Subscription, :count).by(1)
+        expect { post :create, params: { question: attributes_for(:question) }, format: :js }.to change(Subscription, :count).by(1)
       end
 
       it 'redirects to show view' do
-        post :create, params: { question: attributes_for(:question) }
+        post :create, params: { question: attributes_for(:question) }, format: :js
         expect(response).to redirect_to assigns(:question)
       end
     end
 
     context 'with invalid attrs' do
       it 'does not save the question' do
-        expect { post :create, params: { question: attributes_for(:question, :invalid) } }.to_not change(Question, :count)
+        expect { post :create, params: { question: attributes_for(:question, :invalid) }, format: :js }.to_not change(Question, :count)
       end
 
-      it 're-renders new view' do
-        post :create, params: { question: attributes_for(:question, :invalid) }
-        expect(response).to render_template :new
+      it 're-renders create view' do
+        post :create, params: { question: attributes_for(:question, :invalid) }, format: :js
+        expect(response).to render_template :create
       end
     end
   end

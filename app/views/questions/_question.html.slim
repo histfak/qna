@@ -1,5 +1,6 @@
 h1= question.title
-p= question.body
+p class='body'
+  = question.body
 
 - if can?(:edit, question) && question.reward.present?
   p Reward
@@ -19,7 +20,7 @@ p= question.body
               p= link_to 'Delete link', link_path(link), method: :delete, remote: true
         - else
           li
-            p= link_to link.name, link.url
+            p= link_to link.name, link.url, target: :_blank, data: { confirm: "Are you sure?" }
             - if can?(:edit, question)
               p= link_to 'Delete link', link_path(link), method: :delete, remote: true
 

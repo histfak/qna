@@ -27,13 +27,18 @@
 
 .question-errors
 
+- unless @answers.empty?
+  h3 Answers:
+
 .answers
   = render @answers
 
 .answer-errors
 
 - if user_signed_in?
+  br
   = form_with model: [@question, @answer], class: 'new-answer' do |f|
+    br
     b= f.label :body, "Your answer:"
     br
     = f.text_area :body
@@ -42,12 +47,8 @@
     = f.label :files, "Files: "
     = f.file_field :files, multiple: true
     br
-    p Links:
-    p
-      = f.fields_for :links do |l|
-        = render 'shared/link_fields', f: l
-      br
-      .links
-        = link_to_add_association 'Add link', f, :links, partial: 'shared/link_fields'
+    br
+    .links
+      = link_to_add_association 'Add link', f, :links, partial: 'shared/link_fields'
     br
     = f.submit 'Post answer'

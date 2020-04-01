@@ -1,6 +1,6 @@
-div[class="answer-#{answer.id}"]
-  br
-  p= answer.body
+div[class="answer-#{answer.id}" style="border-top: 1px solid #F0F0F0;"]
+  p class='body'
+    = answer.body
 
   .answer-voting
     p.answer-scores
@@ -21,7 +21,7 @@ div[class="answer-#{answer.id}"]
                 p= link_to 'Delete link', link_path(link), method: :delete, remote: true
           - else
             li
-              p= link_to link.name, link.url
+              p= link_to link.name, link.url, target: :_blank, data: { confirm: "Are you sure?" }
               - if can?(:edit, answer)
                 p= link_to 'Delete link', link_path(link), method: :delete, remote: true
 
@@ -50,20 +50,18 @@ div[class="answer-#{answer.id}"]
       = render 'comments/comment_form', resource: answer
 
   = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" } do |f|
-    b= f.label :body, "Edit answer:"
+    b= f.label :body, 'Edit answer:'
     br
     = f.text_area :body
     br
     br
-    = f.label :files, "Files: "
+    = f.label :files, 'Files:'
     = f.file_field :files, multiple: true, direct_upload: true
     br
-    p Links:
-    p
-      = f.fields_for :links do |l|
-        = render 'shared/link_fields', f: l
-      br
-      .links
-        = link_to_add_association 'Add link', f, :links, partial: 'shared/link_fields'
+    = f.fields_for :links do |l|
+      = render 'shared/link_fields', f: l
+    br
+    .links
+      = link_to_add_association 'Add link', f, :links, partial: 'shared/link_fields'
     br
     = f.submit 'Update answer'
