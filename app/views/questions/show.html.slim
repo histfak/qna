@@ -27,8 +27,10 @@
 
 .question-errors
 
-- unless @answers.empty?
-  h3 Answers:
+h3 Answers:
+.no-answers-greetings
+  - if @answers.empty?
+    ' There is no answers. Be first!
 
 .answers
   = render @answers

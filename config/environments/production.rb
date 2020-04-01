@@ -44,7 +44,7 @@ Rails.application.configure do
   # Mount Action Cable outside main process or domain
   # config.action_cable.mount_path = nil
   # config.action_cable.url = 'wss://example.com/cable'
-  config.action_cable.allowed_request_origins = [ '165.22.88.143' ]
+  config.action_cable.allowed_request_origins = ['165.22.88.143']
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # config.force_ssl = true
@@ -67,12 +67,12 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: '165.22.88.143' }
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-      address: 'smtp.gmail.com',
-      port: 587,
-      user_name: Rails.application.credentials[Rails.env.to_sym][:smtp][:username],
-      password: Rails.application.credentials[Rails.env.to_sym][:smtp][:password],
-      authentication: 'plain',
-      enable_starttls_auto: true
+    address: 'smtp.gmail.com',
+    port: 587,
+    user_name: Rails.application.credentials[Rails.env.to_sym][:smtp][:username],
+    password: Rails.application.credentials[Rails.env.to_sym][:smtp][:password],
+    authentication: 'plain',
+    enable_starttls_auto: true
   }
 
   # Ignore bad email addresses and do not raise email delivery errors.

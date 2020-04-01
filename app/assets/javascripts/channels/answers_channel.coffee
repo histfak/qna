@@ -7,5 +7,6 @@ $ ->
     ,
     received: (data) ->
       if data.answer.user_id != gon.user_id
+        $('.no-answers-greetings').addClass('hidden');
         answersList.append(JST['skims/answers/answer'] (data));
   })

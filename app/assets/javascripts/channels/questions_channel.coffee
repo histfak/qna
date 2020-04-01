@@ -6,6 +6,6 @@ $ ->
       @perform 'follow'
     ,
     received: (data) ->
-      questionsList.append data
+      questionsList.append('<p>' + data + '</p>');
   })
 

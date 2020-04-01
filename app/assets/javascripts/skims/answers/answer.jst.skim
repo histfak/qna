@@ -1,6 +1,6 @@
-div class="answer-#{@answer.id}"
-  br
-  p= @answer.body
+div[class="answer-#{@answer.id}" style="border-top: 1px solid #F0F0F0;"]
+  p class='body'
+    = @answer.body
 
   .answer-voting
     p.answer-scores
