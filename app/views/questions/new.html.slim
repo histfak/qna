@@ -2,8 +2,10 @@
 
 .question-errors
 
+h2 class='header'
+  ' Ask a question:
+
 = form_with model: @question do |f|
-  br
   = f.label :title, 'Title:'
   = f.text_field :title
   br

@@ -27,7 +27,8 @@
 
 .question-errors
 
-h3 Answers:
+- unless @answers.empty?
+  h3 Answers:
 
 .answers
   = render @answers

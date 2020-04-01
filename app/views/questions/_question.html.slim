@@ -1,5 +1,6 @@
 h1= question.title
-p= question.body
+p class='body'
+  = question.body
 
 - if can?(:edit, question) && question.reward.present?
   p Reward
