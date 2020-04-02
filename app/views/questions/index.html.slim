@@ -5,5 +5,6 @@
   br
   b List of available questions:
   br
-  - @questions.each do |question|
-    p= link_to question.title, question
+  - cache collection_cache_key_for :question  do
+    - @questions.each do |question|
+      p= link_to question.title, question

@@ -1,13 +1,14 @@
-.question
-  = render @question
+- cache @question do
+  .question
+    = render @question
 
-.question-voting
-  .question-scores
-    br
-    | Scores: #{@question.scores}
+  .question-voting
+    .question-scores
+      br
+      | Scores: #{@question.scores}
 
-  .question-voting-links
-    = render 'shared/voting_links', resource: @question
+    .question-voting-links
+      = render 'shared/voting_links', resource: @question
 
 .question-subscribe
   - if can?(:create, Subscription) && !@question.subscription(current_user)
@@ -17,14 +18,16 @@
 
 .question-comments
   - if @comments.exists?
-    p Comments:
-    = render @comments
+    - cache @comments do
+      p Comments:
+      = render @comments
 
 .question-new-comment
   - if !current_user&.author_of?(@question) && user_signed_in?
-    p= link_to 'Add comment', '#', class: 'comment-question-link', data: {question_id: @question.id}
+    - cache @question do
+      p= link_to 'Add comment', '#', class: 'comment-question-link', data: {question_id: @question.id}
 
-    = render 'comments/comment_form', resource: @question
+      = render 'comments/comment_form', resource: @question
 
 .question-errors
 
@@ -33,8 +36,9 @@ h3 Answers:
   - if @answers.empty?
     ' There is no answers. Be first!
 
-.answers
-  = render @answers
+- cache @answers do
+  .answers
+    = render @answers
 
 .answer-errors
 
