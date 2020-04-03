@@ -15,7 +15,7 @@ RSpec.describe Answer, type: :model do
   let!(:answer3) { question.answers.create(body: 'answer3', author: user2) }
   let!(:reward) { create(:reward, question: question, user: user2) }
 
-  it { should belong_to :question }
+  it { should belong_to(:question).touch(true) }
   it { should have_db_index :question_id }
 
   it { should validate_presence_of :body }

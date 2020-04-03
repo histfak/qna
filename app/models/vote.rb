@@ -2,7 +2,7 @@ class Vote < ApplicationRecord
   include Authorable
 
   belongs_to :user
-  belongs_to :votable, polymorphic: true
+  belongs_to :votable, polymorphic: true, touch: true
 
   validates :user_id, uniqueness: { scope: [:votable_id, :votable_type] }
   validates :score, presence: true
